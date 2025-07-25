@@ -2,6 +2,7 @@
 
 namespace Stephenjude\FilamentTwoFactorAuthentication\Livewire;
 
+use DeviceDetector\DeviceDetector;
 use Filament\Actions\Contracts\HasActions;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Contracts\HasForms;
@@ -15,7 +16,6 @@ use Filament\Tables\Concerns\InteractsWithTable;
 use Filament\Tables\Contracts\HasTable;
 use Filament\Tables\Table;
 use Illuminate\View\View;
-use Jenssegers\Agent\Agent;
 use Spatie\LaravelPasskeys\Livewire\PasskeysComponent;
 use Stephenjude\FilamentTwoFactorAuthentication\TwoFactorAuthenticationPlugin;
 
@@ -26,13 +26,46 @@ class PasskeyAuthentication extends PasskeysComponent implements HasActions, Has
 
     public bool $aside = true;
 
-    protected function getBrowserAndDevice(): string
+    public function getBrowserAndDevice(?string $userAgent = null): string
     {
-        $agent = new Agent();
-        $browser = $agent->browser();
-        $device = $agent->device();
+        // If no user agent is provided, use the current one from the request.
+        // The `?? ''` ensures it's a string even if the server variable is not set.
+        if ($userAgent === null) {
+            $userAgent = $_SERVER['HTTP_USER_AGENT'] ?? '';
+        }
 
-        return "{$browser} on {$device}";
+        $dd = new DeviceDetector($userAgent);
+        $dd->parse();
+
+        // 1. Get the browser name
+        $browserName = $dd->getClient()['name'] ?? 'Unknown Browser';
+
+        // 2. Determine the best device/platform name
+        $deviceName = 'Unknown Device'; // Start with a default
+
+        if ($dd->isDesktop()) {
+            // For desktops, the OS name is most descriptive (e.g., "Windows", "Mac")
+            $deviceName = $dd->getOs()['name'] ?? 'Desktop';
+        } elseif ($dd->getBrandName() === 'Apple' && $dd->isMobile()) {
+            // Specifically identify iPhones and iPads
+            $deviceType = $dd->getDeviceName();
+            if ($deviceType === 'smartphone') {
+                $deviceName = 'iPhone';
+            } elseif ($deviceType === 'tablet') {
+                $deviceName = 'iPad';
+            } else {
+                $deviceName = 'Apple Device'; // Fallback for iPod, etc.
+            }
+        } elseif ($dd->getOs()['name'] === 'Android') {
+            // For Android, the OS name itself is clear and standard
+            $deviceName = 'Android';
+        } elseif ($dd->isMobile()) {
+            // For other mobile devices, use the OS name as a fallback
+            $deviceName = $dd->getOs()['name'] ?? 'Mobile Device';
+        }
+
+        // 3. Combine them and return the final string
+        return "{$browserName} on {$deviceName}";
     }
 
     public function render(): View
