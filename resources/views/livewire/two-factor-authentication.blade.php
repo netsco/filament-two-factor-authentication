@@ -19,10 +19,11 @@
                 @if($this->showRecoveryCodes)
                     <x-filament-two-factor-authentication::recovery-codes />
                 @endif
+                <div class="flex gap-3 flex-wrap ">
+                    {{$this->generateNewRecoveryCodes}}
 
-                {{$this->generateNewRecoveryCodes}}
-
-                {{$this->disableTwoFactorAuthentication}}
+                    {{$this->disableTwoFactorAuthentication}}
+                </div>
             @endif
         </div>
     </x-filament::section>
