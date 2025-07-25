@@ -15,6 +15,7 @@ use Filament\Tables\Concerns\InteractsWithTable;
 use Filament\Tables\Contracts\HasTable;
 use Filament\Tables\Table;
 use Illuminate\View\View;
+use Jenssegers\Agent\Agent;
 use Spatie\LaravelPasskeys\Livewire\PasskeysComponent;
 use Stephenjude\FilamentTwoFactorAuthentication\TwoFactorAuthenticationPlugin;
 
@@ -24,6 +25,15 @@ class PasskeyAuthentication extends PasskeysComponent implements HasActions, Has
     use InteractsWithTable;
 
     public bool $aside = true;
+
+    protected function getBrowserAndDevice(): string
+    {
+        $agent = new Agent();
+        $browser = $agent->browser();
+        $device = $agent->device();
+
+        return "{$browser} on {$device}";
+    }
 
     public function render(): View
     {
@@ -37,13 +47,16 @@ class PasskeyAuthentication extends PasskeysComponent implements HasActions, Has
             ->headerActions([
                 Action::make('addPasskey')
                     ->label(__('filament-two-factor-authentication::components.passkey.add'))
+                    ->modalDescription(__('filament-two-factor-authentication::components.passkey.description'))
                     ->modalWidth(MaxWidth::Medium)
                     ->form([
                         TextInput::make('name')
+                            ->default(fn () => $this->getBrowserAndDevice())
                             ->label(__('filament-two-factor-authentication::components.passkey.name'))
                             ->required()
                             ->autocomplete(false),
                     ])
+                    ->modalSubmitActionLabel(__('filament-two-factor-authentication::components.passkey.submit'))
                     ->action(function ($data) {
                         $this->name = $data['name'];
 

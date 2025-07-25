@@ -36,6 +36,8 @@ return [
     ],
     'passkey' => [
         'add' => 'Create Passkey',
+        'description' => 'Give this passkey a name so you can recognise it later — like ‘Work Laptop’ or ‘My iPhone’.',
+        'submit' => 'Create Passkey',
         'name' => 'Name',
         'added' => 'Passkey added successfully.',
         'login' => 'Login with Passkey',
