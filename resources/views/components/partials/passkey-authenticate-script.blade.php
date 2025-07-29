@@ -30,7 +30,8 @@
 
             form.submit()
 
-            console.error('Passkey authentication error:', error)
+        } catch (error) {
+            console.error('Passkey authentication error:', error);
 
             let title = 'Authentication Error'
             let message = 'An unexpected error occurred during authentication. Please try again.'
@@ -64,4 +65,5 @@
 
 
         }
+    }
 </script>
