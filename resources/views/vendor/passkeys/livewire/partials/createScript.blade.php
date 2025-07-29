@@ -9,10 +9,11 @@
             @this.call('storePasskey', JSON.stringify(passkey));
         } catch (error) {
             console.error('Passkey registration failed:', error);
+            let title = 'Authentication Error'
             new FilamentNotification()
                 .title(title)
                 .danger()
-                .body(error)
+                .body(error.message)
                 .send();
 
             @this.call('handlePasskeyError', error.message || 'An unknown error occurred during passkey registration');
