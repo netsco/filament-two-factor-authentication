@@ -1,6 +1,7 @@
 @script
 <script>
     Livewire.on('passkeyPropertiesValidated', async function (eventData) {
+        console.log('test');
         try {
             const passkeyOptions = eventData[0].passkeyOptions;
 
