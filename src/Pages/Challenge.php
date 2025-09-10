@@ -142,6 +142,6 @@ class Challenge extends BaseSimplePage
 
     protected function hasFullWidthFormActions(): bool
     {
-        return false;
+        return true;
     }
 }
