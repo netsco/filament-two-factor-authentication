@@ -84,6 +84,7 @@ class Challenge extends BaseSimplePage
                     ->schema([
                         TextInput::make('code')
                             ->hiddenLabel()
+                            ->autofocus()
                             ->hint(
                                 __('filament-two-factor-authentication::pages.challenge.confirm')
                             )
@@ -141,6 +142,6 @@ class Challenge extends BaseSimplePage
 
     protected function hasFullWidthFormActions(): bool
     {
-        return true;
+        return false;
     }
 }
