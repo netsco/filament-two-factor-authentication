@@ -49,9 +49,7 @@ class TwoFactorAuthentication extends Component implements HasActions, HasForms
 
             $data = $this->form->getState();
 
-            $code = DigitInputGroup::combineDigits($data);
-
-            app(ConfirmTwoFactorAuthentication::class)($this->getUser(), $code);
+            app(ConfirmTwoFactorAuthentication::class)($this->getUser(), $data['code']);
 
             $this->isConfirmingSetup = false;
             $this->showRecoveryCodes = true;

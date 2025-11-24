@@ -85,8 +85,6 @@ class Challenge extends BaseSimplePage
                     ->schema([
                         DigitInputGroup::make(
                             fn () => function (string $attribute, $value, $fail) {
-                                $code = DigitInputGroup::combineDigits($this->data);
-
                                 $user = Filament::auth()->user();
                                 if (is_null($user)) {
                                     $fail(__('filament-two-factor-authentication::pages.challenge.error'));
@@ -97,7 +95,7 @@ class Challenge extends BaseSimplePage
 
                                 $isValidCode = app(TwoFactorAuthenticationProvider::class)->verify(
                                     secret: decrypt($user->two_factor_secret),
-                                    code: $code
+                                    code: $value
                                 );
 
                                 if (! $isValidCode) {
@@ -107,13 +105,8 @@ class Challenge extends BaseSimplePage
                                         ->danger()
                                         ->send();
 
-                                    // Clear all digit fields
-                                    $this->data['digit0'] = '';
-                                    $this->data['digit1'] = '';
-                                    $this->data['digit2'] = '';
-                                    $this->data['digit3'] = '';
-                                    $this->data['digit4'] = '';
-                                    $this->data['digit5'] = '';
+                                    // Clear the code field
+                                    $this->data['code'] = '';
 
                                     $fail(__('filament-two-factor-authentication::pages.challenge.error'));
 
