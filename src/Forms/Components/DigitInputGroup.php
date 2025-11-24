@@ -17,7 +17,10 @@ class DigitInputGroup
             ->extraInputAttributes([
                 'pattern' => '[0-9]{6}',
                 'autocomplete' => 'one-time-code',
-                'style' => 'letter-spacing: 1.5rem; padding-left: 1rem; text-align: center; font-size: 1.5rem; font-weight: 600;',
+                'class' => 'fi-digit-input !tracking-[2rem] !text-center !text-2xl !font-semibold',
+            ])
+            ->extraAttributes([
+                'class' => 'fi-digit-input-wrapper',
             ])
             ->required();
 

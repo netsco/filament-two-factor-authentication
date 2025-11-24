@@ -22,3 +22,61 @@
         line-height: 2rem;
     }
 }
+
+/* Digit Input Styles */
+.fi-digit-input {
+    background: linear-gradient(to right,
+        rgba(var(--gray-950), 0.05) 0%,
+        rgba(var(--gray-950), 0.05) calc(16.666% - 0.5rem),
+        transparent calc(16.666% - 0.5rem),
+        transparent calc(16.666% + 0.5rem),
+        rgba(var(--gray-950), 0.05) calc(16.666% + 0.5rem),
+        rgba(var(--gray-950), 0.05) calc(33.333% - 0.5rem),
+        transparent calc(33.333% - 0.5rem),
+        transparent calc(33.333% + 0.5rem),
+        rgba(var(--gray-950), 0.05) calc(33.333% + 0.5rem),
+        rgba(var(--gray-950), 0.05) calc(50% - 0.5rem),
+        transparent calc(50% - 0.5rem),
+        transparent calc(50% + 0.5rem),
+        rgba(var(--gray-950), 0.05) calc(50% + 0.5rem),
+        rgba(var(--gray-950), 0.05) calc(66.666% - 0.5rem),
+        transparent calc(66.666% - 0.5rem),
+        transparent calc(66.666% + 0.5rem),
+        rgba(var(--gray-950), 0.05) calc(66.666% + 0.5rem),
+        rgba(var(--gray-950), 0.05) calc(83.333% - 0.5rem),
+        transparent calc(83.333% - 0.5rem),
+        transparent calc(83.333% + 0.5rem),
+        rgba(var(--gray-950), 0.05) calc(83.333% + 0.5rem),
+        rgba(var(--gray-950), 0.05) 100%
+    );
+    background-clip: content-box;
+    caret-color: transparent;
+}
+
+:root.dark .fi-digit-input {
+    background: linear-gradient(to right,
+        rgba(255, 255, 255, 0.05) 0%,
+        rgba(255, 255, 255, 0.05) calc(16.666% - 0.5rem),
+        transparent calc(16.666% - 0.5rem),
+        transparent calc(16.666% + 0.5rem),
+        rgba(255, 255, 255, 0.05) calc(16.666% + 0.5rem),
+        rgba(255, 255, 255, 0.05) calc(33.333% - 0.5rem),
+        transparent calc(33.333% - 0.5rem),
+        transparent calc(33.333% + 0.5rem),
+        rgba(255, 255, 255, 0.05) calc(33.333% + 0.5rem),
+        rgba(255, 255, 255, 0.05) calc(50% - 0.5rem),
+        transparent calc(50% - 0.5rem),
+        transparent calc(50% + 0.5rem),
+        rgba(255, 255, 255, 0.05) calc(50% + 0.5rem),
+        rgba(255, 255, 255, 0.05) calc(66.666% - 0.5rem),
+        transparent calc(66.666% - 0.5rem),
+        transparent calc(66.666% + 0.5rem),
+        rgba(255, 255, 255, 0.05) calc(66.666% + 0.5rem),
+        rgba(255, 255, 255, 0.05) calc(83.333% - 0.5rem),
+        transparent calc(83.333% - 0.5rem),
+        transparent calc(83.333% + 0.5rem),
+        rgba(255, 255, 255, 0.05) calc(83.333% + 0.5rem),
+        rgba(255, 255, 255, 0.05) 100%
+    );
+    background-clip: content-box;
+}
