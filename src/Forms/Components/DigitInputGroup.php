@@ -18,6 +18,8 @@ class DigitInputGroup
                 'pattern' => '[0-9]{6}',
                 'autocomplete' => 'one-time-code',
                 'class' => 'fi-digit-input',
+            ])->extraFieldWrapperAttributes([
+                'class' => 'fi-digit-input-group',
             ])
             ->required();
 

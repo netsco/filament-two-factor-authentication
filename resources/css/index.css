@@ -64,3 +64,7 @@
         linear-gradient(to right, transparent 0, transparent 17.5ch, rgba(255, 255, 255, 0.15) 17.5ch, rgba(255, 255, 255, 0.15) calc(17.5ch + 1px), transparent calc(17.5ch + 1px)),
         linear-gradient(to right, transparent 0, transparent 21ch, rgba(255, 255, 255, 0.15) 21ch, rgba(255, 255, 255, 0.15) calc(21ch + 1px), transparent calc(21ch + 1px));
 }
+
+.fi-digit-input-group {
+    padding-left: 2.5ch;
+}
