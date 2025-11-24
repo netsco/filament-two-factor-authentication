@@ -13,7 +13,7 @@
 
                 <x-filament-two-factor-authentication::code-input
                     wire:model="data.code"
-                    :error="$getErrorsForPath('data.code')"
+                    :error="$this->getErrorsForPath('data.code')"
                 />
 
                 @error('data.code')
