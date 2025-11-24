@@ -4,7 +4,7 @@
 ])
 
 <div x-data="codeInput()" x-init="init()" class="fi-code-input">
-    <div class="grid grid-cols-6 gap-2 sm:gap-3">
+    <div class="flex gap-2 sm:gap-3">
         @for ($i = 0; $i < 6; $i++)
             <input
                 type="text"
