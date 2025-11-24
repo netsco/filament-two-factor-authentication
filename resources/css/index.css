@@ -6,9 +6,9 @@
     width: fit-content;
     max-width: 100% !important;
     letter-spacing: 2.5ch !important;
+    padding-left: 0.5ch;
+    padding-right: 0 !important;
     text-align: left !important;
-    padding-left: 0!important;
-    padding-right: 0!important;
     font-size: 1.5rem !important;
     font-weight: 600 !important;
     font-variant-numeric: tabular-nums !important;
