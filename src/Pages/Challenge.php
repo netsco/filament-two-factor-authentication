@@ -6,8 +6,10 @@ use DanHarrin\LivewireRateLimiting\Exceptions\TooManyRequestsException;
 use Filament\Actions\Action;
 use Filament\Facades\Filament;
 use Filament\Forms\Components\TextInput;
+use Filament\Forms\Components\View;
 use Filament\Forms\Form;
 use Filament\Http\Responses\Auth\LoginResponse;
+use Filament\Notifications\Notification;
 use Illuminate\Contracts\Support\Htmlable;
 use Stephenjude\FilamentTwoFactorAuthentication\Events\TwoFactorAuthenticationChallenged;
 use Stephenjude\FilamentTwoFactorAuthentication\Events\TwoFactorAuthenticationFailed;
@@ -83,14 +85,10 @@ class Challenge extends BaseSimplePage
                 $this->makeForm()
                     ->schema([
                         TextInput::make('code')
-                            ->hiddenLabel()
-                            ->autofocus()
-                            ->hint(
-                                __('filament-two-factor-authentication::pages.challenge.confirm')
-                            )
                             ->label(__('filament-two-factor-authentication::pages.challenge.code'))
+                            ->hiddenLabel()
+                            ->extraAttributes(['style' => 'display: none;'])
                             ->required()
-                            ->autocomplete()
                             ->rules([
                                 fn () => function (string $attribute, $value, $fail) {
 
@@ -109,6 +107,14 @@ class Challenge extends BaseSimplePage
                                     );
 
                                     if (! $isValidCode) {
+                                        Notification::make()
+                                            ->title(__('filament-two-factor-authentication::pages.challenge.notification.title'))
+                                            ->body(__('filament-two-factor-authentication::pages.challenge.notification.body'))
+                                            ->danger()
+                                            ->send();
+
+                                        $this->dispatch('clear-code-input');
+
                                         $fail(__('filament-two-factor-authentication::pages.challenge.error'));
 
                                         event(new TwoFactorAuthenticationFailed($user));
@@ -143,5 +149,10 @@ class Challenge extends BaseSimplePage
     protected function hasFullWidthFormActions(): bool
     {
         return true;
+    }
+
+    protected function getErrorsForPath(string $path): bool
+    {
+        return $this->getErrorBag()->has($path);
     }
 }

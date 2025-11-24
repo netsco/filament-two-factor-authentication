@@ -1,1 +1,24 @@
 @import '../../vendor/filament/filament/resources/css/theme.css';
+
+/* Code Input Component Styles */
+.fi-code-input input {
+    aspect-ratio: 1;
+    font-variant-numeric: tabular-nums;
+}
+
+.fi-code-input input::-webkit-outer-spin-button,
+.fi-code-input input::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+
+.fi-code-input input[type="text"] {
+    -moz-appearance: textfield;
+}
+
+@media (max-width: 640px) {
+    .fi-code-input input {
+        font-size: 1.5rem;
+        line-height: 2rem;
+    }
+}
