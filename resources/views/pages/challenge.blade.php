@@ -5,7 +5,7 @@
     </x-slot>
 
     <x-filament-panels::form id="form" wire:submit="authenticate">
-        <p class="text-sm text-gray-600 dark:text-gray-400 mb-6">
+        <p class="text-sm text-gray-600 dark:text-gray-400">
             {{ __('filament-two-factor-authentication::pages.challenge.confirm') }}
         </p>
 

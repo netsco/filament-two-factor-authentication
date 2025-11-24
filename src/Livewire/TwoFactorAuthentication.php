@@ -9,6 +9,7 @@ use Filament\Forms\Components\Placeholder;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Contracts\HasForms;
 use Filament\Forms\Form;
+use Stephenjude\FilamentTwoFactorAuthentication\Forms\Components\DigitInputGroup;
 use Illuminate\Support\Facades\Hash;
 use Livewire\Component;
 use Stephenjude\FilamentTwoFactorAuthentication\Actions\ConfirmTwoFactorAuthentication;
@@ -48,7 +49,9 @@ class TwoFactorAuthentication extends Component implements HasActions, HasForms
 
             $data = $this->form->getState();
 
-            app(ConfirmTwoFactorAuthentication::class)($this->getUser(), $data['code']);
+            $code = DigitInputGroup::combineDigits($data);
+
+            app(ConfirmTwoFactorAuthentication::class)($this->getUser(), $code);
 
             $this->isConfirmingSetup = false;
             $this->showRecoveryCodes = true;
@@ -145,9 +148,7 @@ class TwoFactorAuthentication extends Component implements HasActions, HasForms
                         'filament-two-factor-authentication::components.2fa.setup_key',
                         ['setup_key' => decrypt($this->getUser()->two_factor_secret)]
                     )),
-                TextInput::make('code')
-                    ->label(__('filament-two-factor-authentication::components.2fa.code'))
-                    ->required(),
+                DigitInputGroup::make(),
             ])
             ->statePath('data');
     }
