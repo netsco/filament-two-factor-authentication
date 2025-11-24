@@ -5,26 +5,11 @@
     </x-slot>
 
     <x-filament-panels::form id="form" wire:submit="authenticate">
-        <div class="space-y-6">
-            <div>
-                <p class="text-sm text-gray-600 dark:text-gray-400 mb-4">
-                    {{ __('filament-two-factor-authentication::pages.challenge.confirm') }}
-                </p>
+        <p class="text-sm text-gray-600 dark:text-gray-400 mb-6">
+            {{ __('filament-two-factor-authentication::pages.challenge.confirm') }}
+        </p>
 
-                <x-filament-two-factor-authentication::code-input
-                    wire:model="data.code"
-                    :error="$this->getErrorsForPath('data.code')"
-                />
-
-                @error('data.code')
-                    <p class="text-sm text-danger-600 dark:text-danger-400 mt-2">
-                        {{ $message }}
-                    </p>
-                @enderror
-            </div>
-
-            {{ $this->form }}
-        </div>
+        {{ $this->form }}
 
         <x-filament-panels::form.actions
             :actions="$this->getCachedFormActions()"

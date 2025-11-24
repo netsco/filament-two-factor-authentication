@@ -5,8 +5,8 @@ namespace Stephenjude\FilamentTwoFactorAuthentication\Pages;
 use DanHarrin\LivewireRateLimiting\Exceptions\TooManyRequestsException;
 use Filament\Actions\Action;
 use Filament\Facades\Filament;
+use Filament\Forms\Components\Group;
 use Filament\Forms\Components\TextInput;
-use Filament\Forms\Components\View;
 use Filament\Forms\Form;
 use Filament\Http\Responses\Auth\LoginResponse;
 use Filament\Notifications\Notification;
@@ -84,43 +84,109 @@ class Challenge extends BaseSimplePage
             'form' => $this->form(
                 $this->makeForm()
                     ->schema([
-                        TextInput::make('code')
-                            ->label(__('filament-two-factor-authentication::pages.challenge.code'))
-                            ->hiddenLabel()
-                            ->extraAttributes(['style' => 'display: none;'])
-                            ->required()
-                            ->rules([
-                                fn () => function (string $attribute, $value, $fail) {
+                        Group::make([
+                            TextInput::make('digit0')
+                                ->hiddenLabel()
+                                ->maxLength(1)
+                                ->inputMode('numeric')
+                                ->extraInputAttributes([
+                                    'class' => 'text-center text-2xl font-semibold',
+                                    'pattern' => '[0-9]',
+                                ])
+                                ->required(),
+                            TextInput::make('digit1')
+                                ->hiddenLabel()
+                                ->maxLength(1)
+                                ->inputMode('numeric')
+                                ->extraInputAttributes([
+                                    'class' => 'text-center text-2xl font-semibold',
+                                    'pattern' => '[0-9]',
+                                ])
+                                ->required(),
+                            TextInput::make('digit2')
+                                ->hiddenLabel()
+                                ->maxLength(1)
+                                ->inputMode('numeric')
+                                ->extraInputAttributes([
+                                    'class' => 'text-center text-2xl font-semibold',
+                                    'pattern' => '[0-9]',
+                                ])
+                                ->required(),
+                            TextInput::make('digit3')
+                                ->hiddenLabel()
+                                ->maxLength(1)
+                                ->inputMode('numeric')
+                                ->extraInputAttributes([
+                                    'class' => 'text-center text-2xl font-semibold',
+                                    'pattern' => '[0-9]',
+                                ])
+                                ->required(),
+                            TextInput::make('digit4')
+                                ->hiddenLabel()
+                                ->maxLength(1)
+                                ->inputMode('numeric')
+                                ->extraInputAttributes([
+                                    'class' => 'text-center text-2xl font-semibold',
+                                    'pattern' => '[0-9]',
+                                ])
+                                ->required(),
+                            TextInput::make('digit5')
+                                ->hiddenLabel()
+                                ->maxLength(1)
+                                ->inputMode('numeric')
+                                ->extraInputAttributes([
+                                    'class' => 'text-center text-2xl font-semibold',
+                                    'pattern' => '[0-9]',
+                                ])
+                                ->required()
+                                ->rules([
+                                    fn () => function (string $attribute, $value, $fail) {
+                                        // Combine all digits
+                                        $code = $this->data['digit0'] .
+                                                $this->data['digit1'] .
+                                                $this->data['digit2'] .
+                                                $this->data['digit3'] .
+                                                $this->data['digit4'] .
+                                                $this->data['digit5'];
 
-                                    $user = Filament::auth()->user();
-                                    if (is_null($user)) {
-                                        $fail(__('filament-two-factor-authentication::pages.challenge.error'));
+                                        $user = Filament::auth()->user();
+                                        if (is_null($user)) {
+                                            $fail(__('filament-two-factor-authentication::pages.challenge.error'));
 
-                                        redirect()->to(filament()->getCurrentPanel()->getLoginUrl());
+                                            redirect()->to(filament()->getCurrentPanel()->getLoginUrl());
 
-                                        return;
-                                    }
+                                            return;
+                                        }
 
-                                    $isValidCode = app(TwoFactorAuthenticationProvider::class)->verify(
-                                        secret: decrypt($user->two_factor_secret),
-                                        code: $value
-                                    );
+                                        $isValidCode = app(TwoFactorAuthenticationProvider::class)->verify(
+                                            secret: decrypt($user->two_factor_secret),
+                                            code: $code
+                                        );
 
-                                    if (! $isValidCode) {
-                                        Notification::make()
-                                            ->title(__('filament-two-factor-authentication::pages.challenge.notification.title'))
-                                            ->body(__('filament-two-factor-authentication::pages.challenge.notification.body'))
-                                            ->danger()
-                                            ->send();
+                                        if (! $isValidCode) {
+                                            Notification::make()
+                                                ->title(__('filament-two-factor-authentication::pages.challenge.notification.title'))
+                                                ->body(__('filament-two-factor-authentication::pages.challenge.notification.body'))
+                                                ->danger()
+                                                ->send();
 
-                                        $this->dispatch('clear-code-input');
+                                            // Clear all digit fields
+                                            $this->data['digit0'] = '';
+                                            $this->data['digit1'] = '';
+                                            $this->data['digit2'] = '';
+                                            $this->data['digit3'] = '';
+                                            $this->data['digit4'] = '';
+                                            $this->data['digit5'] = '';
 
-                                        $fail(__('filament-two-factor-authentication::pages.challenge.error'));
+                                            $fail(__('filament-two-factor-authentication::pages.challenge.error'));
 
-                                        event(new TwoFactorAuthenticationFailed($user));
-                                    }
-                                },
-                            ]),
+                                            event(new TwoFactorAuthenticationFailed($user));
+                                        }
+                                    },
+                                ]),
+                        ])
+                            ->columns(6)
+                            ->columnSpanFull(),
                     ])
                     ->statePath('data'),
             ),

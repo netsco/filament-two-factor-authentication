@@ -4,7 +4,7 @@
 ])
 
 <div x-data="codeInput()" x-init="init()" class="fi-code-input">
-    <div class="flex gap-2 sm:gap-3">
+    <div class="flex gap-2">
         @for ($i = 0; $i < 6; $i++)
             <input
                 type="text"
@@ -69,8 +69,11 @@ Alpine.data('codeInput', () => ({
 
         // Auto-submit if all digits filled
         if (this.digits.every(d => d !== '')) {
+            // Wait for Livewire to sync the wire:model value
             this.$nextTick(() => {
-                this.$root.closest('form').dispatchEvent(new Event('submit', { bubbles: true, cancelable: true }));
+                setTimeout(() => {
+                    this.$root.closest('form').dispatchEvent(new Event('submit', { bubbles: true, cancelable: true }));
+                }, 100);
             });
         }
     },
@@ -119,9 +122,11 @@ Alpine.data('codeInput', () => ({
             // Focus last input
             this.$refs.input5.focus();
 
-            // Auto-submit
+            // Auto-submit - wait for Livewire to sync
             this.$nextTick(() => {
-                this.$root.closest('form').dispatchEvent(new Event('submit', { bubbles: true, cancelable: true }));
+                setTimeout(() => {
+                    this.$root.closest('form').dispatchEvent(new Event('submit', { bubbles: true, cancelable: true }));
+                }, 100);
             });
         }
     },
