@@ -86,7 +86,7 @@ class Challenge extends BaseSimplePage
                 ->maxLength(1)
                 ->inputMode('numeric')
                 ->extraInputAttributes([
-                    'class' => 'text-center text-2xl font-semibold',
+                    'class' => 'text-center !text-2xl !font-semibold aspect-square',
                     'pattern' => '[0-9]',
                     'x-ref' => "digit{$index}",
                     'x-on:input' => "handleInput({$index}, \$event)",
