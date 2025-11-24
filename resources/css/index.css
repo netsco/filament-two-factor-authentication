@@ -25,61 +25,29 @@
 
 /* Digit Input Styles */
 .fi-digit-input {
-    letter-spacing: 2rem;
-    padding-left: 1.5rem;
+    width: 18ch;
+    max-width: 100%;
+    letter-spacing: 2ch;
+    padding: 0.75rem 0.5ch;
     text-align: left;
-    background: linear-gradient(to right,
-        rgba(var(--gray-950), 0.05) 0%,
-        rgba(var(--gray-950), 0.05) calc(16.666% - 0.5rem),
-        transparent calc(16.666% - 0.5rem),
-        transparent calc(16.666% + 0.5rem),
-        rgba(var(--gray-950), 0.05) calc(16.666% + 0.5rem),
-        rgba(var(--gray-950), 0.05) calc(33.333% - 0.5rem),
-        transparent calc(33.333% - 0.5rem),
-        transparent calc(33.333% + 0.5rem),
-        rgba(var(--gray-950), 0.05) calc(33.333% + 0.5rem),
-        rgba(var(--gray-950), 0.05) calc(50% - 0.5rem),
-        transparent calc(50% - 0.5rem),
-        transparent calc(50% + 0.5rem),
-        rgba(var(--gray-950), 0.05) calc(50% + 0.5rem),
-        rgba(var(--gray-950), 0.05) calc(66.666% - 0.5rem),
-        transparent calc(66.666% - 0.5rem),
-        transparent calc(66.666% + 0.5rem),
-        rgba(var(--gray-950), 0.05) calc(66.666% + 0.5rem),
-        rgba(var(--gray-950), 0.05) calc(83.333% - 0.5rem),
-        transparent calc(83.333% - 0.5rem),
-        transparent calc(83.333% + 0.5rem),
-        rgba(var(--gray-950), 0.05) calc(83.333% + 0.5rem),
-        rgba(var(--gray-950), 0.05) 100%
-    );
-    background-clip: content-box;
-    caret-color: transparent;
+    font-size: 1.5rem;
+    font-weight: 600;
+    background-image:
+        linear-gradient(to right, transparent 0, transparent 3ch, rgba(var(--gray-300), 1) 3ch, rgba(var(--gray-300), 1) 3ch, transparent 3ch),
+        linear-gradient(to right, transparent 0, transparent 6ch, rgba(var(--gray-300), 1) 6ch, rgba(var(--gray-300), 1) 6ch, transparent 6ch),
+        linear-gradient(to right, transparent 0, transparent 9ch, rgba(var(--gray-300), 1) 9ch, rgba(var(--gray-300), 1) 9ch, transparent 9ch),
+        linear-gradient(to right, transparent 0, transparent 12ch, rgba(var(--gray-300), 1) 12ch, rgba(var(--gray-300), 1) 12ch, transparent 12ch),
+        linear-gradient(to right, transparent 0, transparent 15ch, rgba(var(--gray-300), 1) 15ch, rgba(var(--gray-300), 1) 15ch, transparent 15ch);
+    background-size: 100% 100%;
+    background-repeat: no-repeat;
+    caret-color: rgb(var(--primary-600));
 }
 
 :root.dark .fi-digit-input {
-    background: linear-gradient(to right,
-        rgba(255, 255, 255, 0.05) 0%,
-        rgba(255, 255, 255, 0.05) calc(16.666% - 0.5rem),
-        transparent calc(16.666% - 0.5rem),
-        transparent calc(16.666% + 0.5rem),
-        rgba(255, 255, 255, 0.05) calc(16.666% + 0.5rem),
-        rgba(255, 255, 255, 0.05) calc(33.333% - 0.5rem),
-        transparent calc(33.333% - 0.5rem),
-        transparent calc(33.333% + 0.5rem),
-        rgba(255, 255, 255, 0.05) calc(33.333% + 0.5rem),
-        rgba(255, 255, 255, 0.05) calc(50% - 0.5rem),
-        transparent calc(50% - 0.5rem),
-        transparent calc(50% + 0.5rem),
-        rgba(255, 255, 255, 0.05) calc(50% + 0.5rem),
-        rgba(255, 255, 255, 0.05) calc(66.666% - 0.5rem),
-        transparent calc(66.666% - 0.5rem),
-        transparent calc(66.666% + 0.5rem),
-        rgba(255, 255, 255, 0.05) calc(66.666% + 0.5rem),
-        rgba(255, 255, 255, 0.05) calc(83.333% - 0.5rem),
-        transparent calc(83.333% - 0.5rem),
-        transparent calc(83.333% + 0.5rem),
-        rgba(255, 255, 255, 0.05) calc(83.333% + 0.5rem),
-        rgba(255, 255, 255, 0.05) 100%
-    );
-    background-clip: content-box;
+    background-image:
+        linear-gradient(to right, transparent 0, transparent 3ch, rgba(255, 255, 255, 0.1) 3ch, rgba(255, 255, 255, 0.1) 3ch, transparent 3ch),
+        linear-gradient(to right, transparent 0, transparent 6ch, rgba(255, 255, 255, 0.1) 6ch, rgba(255, 255, 255, 0.1) 6ch, transparent 6ch),
+        linear-gradient(to right, transparent 0, transparent 9ch, rgba(255, 255, 255, 0.1) 9ch, rgba(255, 255, 255, 0.1) 9ch, transparent 9ch),
+        linear-gradient(to right, transparent 0, transparent 12ch, rgba(255, 255, 255, 0.1) 12ch, rgba(255, 255, 255, 0.1) 12ch, transparent 12ch),
+        linear-gradient(to right, transparent 0, transparent 15ch, rgba(255, 255, 255, 0.1) 15ch, rgba(255, 255, 255, 0.1) 15ch, transparent 15ch);
 }
