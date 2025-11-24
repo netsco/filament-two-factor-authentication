@@ -19,6 +19,8 @@ class Challenge extends BaseSimplePage
 {
     protected static string $view = 'filament-two-factor-authentication::pages.challenge';
 
+    protected bool $hasTopbar = false;
+
     public ?array $data = [];
 
     public function getTitle(): string | Htmlable
