@@ -20,7 +20,6 @@ class DigitInputGroup
                     'x-ref' => "digit{$index}",
                     'x-on:input' => "handleInput({$index}, \$event)",
                     'x-on:keydown' => "handleKeydown({$index}, \$event)",
-                    'x-on:paste.prevent' => 'handlePaste($event)',
                 ])
                 ->required();
 
@@ -43,6 +42,7 @@ class DigitInputGroup
             ->columns(6)
             ->columnSpanFull()
             ->extraAttributes([
+                'x-on:paste.capture' => 'handlePaste($event)',
                 'x-data' => '{
                     init() {
                         this.$nextTick(() => this.$refs.digit0?.focus());
