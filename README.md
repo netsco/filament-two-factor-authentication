@@ -47,6 +47,11 @@ Install the plugin migration using:
 php artisan filament-two-factor-authentication:install
 ```
 
+Add the plugin styles to your Filament theme CSS file (e.g., `resources/css/filament/admin/theme.css`):
+```css
+@import '/vendor/stephenjude/filament-two-factor-authentication/resources/dist/filament-two-factor-authentication.css';
+```
+
 Optionally, you can publish the views using
 ```bash
 php artisan vendor:publish --tag="filament-two-factor-authentication-views"
