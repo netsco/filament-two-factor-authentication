@@ -2,11 +2,11 @@
 
 /* Digit Input Styles */
 .fi-digit-input {
-    --digit-spacing: calc(3.5ch - 1px);
+    --digit-spacing: calc(3.6ch - 1px);
     width: fit-content;
     max-width: 100% !important;
     letter-spacing: 2.5ch !important;
-    padding-left: 0.5ch;
+    padding-left: 1.5ch;
     padding-right: 0 !important;
     text-align: left !important;
     font-size: 1.5rem !important;
