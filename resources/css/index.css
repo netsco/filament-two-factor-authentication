@@ -2,7 +2,7 @@
 
 /* Digit Input Styles */
 .fi-digit-input {
-    --digit-spacing: 3.5ch;
+    --digit-spacing: calc(3.5ch - 1px);
     width: fit-content;
     max-width: 100% !important;
     letter-spacing: 2.5ch !important;
