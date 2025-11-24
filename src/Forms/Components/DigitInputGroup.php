@@ -20,7 +20,7 @@ class DigitInputGroup
                     'x-ref' => "digit{$index}",
                     'x-on:input' => "handleInput({$index}, \$event)",
                     'x-on:keydown' => "handleKeydown({$index}, \$event)",
-                    'x-on:paste' => $index === 0 ? 'handlePaste($event)' : '',
+                    'x-on:paste.prevent' => 'handlePaste($event)',
                 ])
                 ->required();
 
