@@ -9,6 +9,8 @@ class Setup extends BaseSimplePage
 {
     protected static string $view = 'filament-two-factor-authentication::pages.setup';
 
+    protected bool $hasTopbar = false;
+
     public ?array $data = [];
 
     public function mount(): void
