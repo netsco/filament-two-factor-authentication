@@ -14,6 +14,7 @@ class DigitInputGroup
             ->maxLength(6)
             ->minLength(6)
             ->inputMode('numeric')
+            ->autofocus()
             ->extraInputAttributes([
                 'pattern' => '[0-9]{6}',
                 'autocomplete' => 'one-time-code',
