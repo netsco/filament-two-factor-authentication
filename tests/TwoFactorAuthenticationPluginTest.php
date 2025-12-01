@@ -19,10 +19,24 @@ it('enables two factor authentication', function () {
     expect($this->plugin->hasEnabledTwoFactorAuthentication())->toBeTrue();
 });
 
-it('enables passkey authentication', function () {
+it('enables passkey authentication with default config', function () {
     $this->plugin->enablePasskeyAuthentication();
 
     expect($this->plugin->hasEnabledPasskeyAuthentication())->toBeTrue();
+    expect($this->plugin->showsPasskeyLoginButton())->toBeTrue();
+    expect($this->plugin->hasEnabledPasskeyAutofill())->toBeFalse();
+});
+
+it('configures passkey login button and autofill options', function () {
+    $this->plugin->enablePasskeyAuthentication(
+        condition: true,
+        showLoginButton: false,
+        enableAutofill: true
+    );
+
+    expect($this->plugin->hasEnabledPasskeyAuthentication())->toBeTrue();
+    expect($this->plugin->showsPasskeyLoginButton())->toBeFalse();
+    expect($this->plugin->hasEnabledPasskeyAutofill())->toBeTrue();
 });
 
 it('adds 2FA to user menu item', function () {
