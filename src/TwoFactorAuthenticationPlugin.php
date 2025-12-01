@@ -28,6 +28,10 @@ class TwoFactorAuthenticationPlugin implements Plugin
 
     protected bool $enablePasskeyAuthentication = false;
 
+    protected bool $showPasskeyLoginButton = true;
+
+    protected bool $enablePasskeyAutofill = false;
+
     protected bool $enableTwoFactorAuthentication = false;
 
     #[Deprecated('Use the `hasForcedTwoFactorSetup` property instead.')]
@@ -221,9 +225,24 @@ class TwoFactorAuthenticationPlugin implements Plugin
         return $this->enablePasskeyAuthentication;
     }
 
-    public function enablePasskeyAuthentication(Closure | bool $condition = true): static
+    public function showsPasskeyLoginButton(): bool
     {
+        return $this->showPasskeyLoginButton;
+    }
+
+    public function hasEnabledPasskeyAutofill(): bool
+    {
+        return $this->enablePasskeyAutofill;
+    }
+
+    public function enablePasskeyAuthentication(
+        Closure | bool $condition = true,
+        Closure | bool $showLoginButton = true,
+        Closure | bool $enableAutofill = false,
+    ): static {
         $this->enablePasskeyAuthentication = $this->evaluate($condition);
+        $this->showPasskeyLoginButton = $this->evaluate($showLoginButton);
+        $this->enablePasskeyAutofill = $this->evaluate($enableAutofill);
 
         return $this;
     }
@@ -232,7 +251,13 @@ class TwoFactorAuthenticationPlugin implements Plugin
     {
         $panel->renderHook(
             PanelsRenderHook::AUTH_LOGIN_FORM_AFTER,
-            fn (): string => Blade::render('<x-filament-two-factor-authentication::passkey-login />'),
+            fn (): string => Blade::render(
+                '<x-filament-two-factor-authentication::passkey-login :showButton="$showButton" :enableAutofill="$enableAutofill" />',
+                [
+                    'showButton' => $this->showsPasskeyLoginButton(),
+                    'enableAutofill' => $this->hasEnabledPasskeyAutofill(),
+                ]
+            ),
         );
     }
 

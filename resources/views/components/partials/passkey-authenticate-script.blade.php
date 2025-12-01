@@ -1,3 +1,5 @@
+@props(['enableAutofill' => false])
+
 <script>
     // AbortController for managing conditional UI authentication
     let conditionalAuthController = null;
@@ -136,10 +138,12 @@
         startConditionalAuthentication()
     }
 
+    @if($enableAutofill)
     // Initialize when DOM is ready
     if (document.readyState === 'loading') {
         document.addEventListener('DOMContentLoaded', setupPasskeyAutofill)
     } else {
         setupPasskeyAutofill()
     }
+    @endif
 </script>
