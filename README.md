@@ -91,7 +91,9 @@ TwoFactorAuthenticationPlugin::make()
             challengeMiddleware:  TwoFactorChallenge::class, // Middleware to challenge user with 2FA
         ) 
         ->enablePasskeyAuthentication(
-            condition:  true, // Enable Passkey 
+            condition:  true, // Enable Passkey
+            showLoginButton:  true, // Show "Sign in with passkey" button on login page
+            enableAutofill:  false, // Enable passkey autofill in the email input field
         ) 
         ->forceTwoFactorSetup(
             condition:  true, // Force 2FA setup for all users
