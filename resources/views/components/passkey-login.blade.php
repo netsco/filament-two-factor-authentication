@@ -1,6 +1,6 @@
 @props(['showButton' => true, 'enableAutofill' => false])
 
-<div class="flex justify-center w-full">
+<div class="flex flex-col items-center gap-4 w-full">
     @include('filament-two-factor-authentication::components.partials.passkey-authenticate-script', [
         'enableAutofill' => $enableAutofill
     ])
