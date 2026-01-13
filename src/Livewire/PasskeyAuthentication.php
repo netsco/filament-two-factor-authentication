@@ -16,6 +16,7 @@ use Filament\Tables\Concerns\InteractsWithTable;
 use Filament\Tables\Contracts\HasTable;
 use Filament\Tables\Table;
 use Illuminate\View\View;
+use Livewire\Attributes\On;
 use Spatie\LaravelPasskeys\Livewire\PasskeysComponent;
 use Stephenjude\FilamentTwoFactorAuthentication\TwoFactorAuthenticationPlugin;
 
@@ -90,12 +91,16 @@ class PasskeyAuthentication extends PasskeysComponent implements HasActions, Has
                             ->autocomplete(false),
                     ])
                     ->modalSubmitActionLabel(__('filament-two-factor-authentication::components.passkey.submit'))
-                    ->action(function ($data) {
+                    ->action(function ($data, Action $action) {
                         $this->name = $data['name'];
 
+                        // Dispatch to self so $wire.on() can catch it
                         $this->dispatch('passkeyPropertiesValidated', [
                             'passkeyOptions' => json_decode($this->generatePasskeyOptions()),
-                        ]);
+                        ])->self();
+
+                        // Halt to keep the modal open - it will be closed after storePasskey succeeds
+                        $action->halt();
                     }),
             ])
             ->columns([
@@ -144,5 +149,15 @@ class PasskeyAuthentication extends PasskeysComponent implements HasActions, Has
             ->title(__('filament-two-factor-authentication::components.passkey.added'))
             ->success()
             ->send();
+
+        // Unmount the action to close the modal cleanly
+        $this->unmountTableAction();
+    }
+
+    #[On('passkeyRegistrationFailed')]
+    public function handlePasskeyRegistrationFailed(): void
+    {
+        // Unmount the action to close modal on failure too
+        $this->unmountTableAction();
     }
 }

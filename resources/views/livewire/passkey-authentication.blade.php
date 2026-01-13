@@ -18,4 +18,4 @@
     <x-filament-actions::modals />
 </div>
 
-@include('passkeys::livewire.partials.createScript')
+@include('filament-two-factor-authentication::components.partials.passkey-register-script')
