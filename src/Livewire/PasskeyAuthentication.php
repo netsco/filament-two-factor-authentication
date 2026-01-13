@@ -96,10 +96,6 @@ class PasskeyAuthentication extends PasskeysComponent implements HasActions, Has
                         $this->dispatch('passkeyPropertiesValidated', [
                             'passkeyOptions' => json_decode($this->generatePasskeyOptions()),
                         ]);
-
-                        // Keep the modal open while WebAuthn registration is in progress.
-                        // The modal will be closed by JavaScript after registration succeeds or fails.
-                        $action->halt();
                     }),
             ])
             ->columns([
@@ -144,17 +140,9 @@ class PasskeyAuthentication extends PasskeysComponent implements HasActions, Has
     {
         parent::storePasskey($passkey);
 
-        // Close the modal and refresh the table
-        $this->dispatch('close-modal', id: "{$this->getId()}-table-action");
-
         Notification::make()
             ->title(__('filament-two-factor-authentication::components.passkey.added'))
             ->success()
             ->send();
-    }
-
-    public function closePasskeyModal(): void
-    {
-        $this->dispatch('close-modal', id: "{$this->getId()}-table-action");
     }
 }
