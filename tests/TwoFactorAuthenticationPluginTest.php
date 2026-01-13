@@ -84,3 +84,24 @@ it('can render passkey component', function () {
         ->assertTableActionExists('delete')
         ->assertTableHeaderActionsExistInOrder(['addPasskey']);
 });
+
+it('dispatches passkeyPropertiesValidated event to self on passkey form submit', function () {
+    livewire(PasskeyAuthentication::class)
+        ->callTableAction('addPasskey', data: ['name' => 'Test Passkey'])
+        ->assertDispatched('passkeyPropertiesValidated');
+});
+
+it('closes passkey modal when registration fails', function () {
+    livewire(PasskeyAuthentication::class)
+        ->callTableAction('addPasskey', data: ['name' => 'Test Passkey'])
+        ->call('handlePasskeyRegistrationFailed')
+        ->assertTableActionNotMounted('addPasskey');
+});
+
+it('requires compatible webauthn-lib version', function () {
+    $composerJson = json_decode(file_get_contents(__DIR__ . '/../composer.json'), true);
+
+    // webauthn-lib 5.2.3+ has breaking change: PublicKeyCredentialSource → CredentialRecord
+    // Must stay pinned to 5.2.2 for spatie/laravel-passkeys compatibility
+    expect($composerJson['require']['web-auth/webauthn-lib'])->toBe('5.2.2');
+});

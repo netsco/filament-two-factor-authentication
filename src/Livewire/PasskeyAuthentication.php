@@ -57,7 +57,7 @@ class PasskeyAuthentication extends PasskeysComponent implements HasActions, Has
             } else {
                 $deviceName = 'Apple Device'; // Fallback for iPod, etc.
             }
-        } elseif ($dd->getOs()['name'] === 'Android') {
+        } elseif (($dd->getOs()['name'] ?? null) === 'Android') {
             // For Android, the OS name itself is clear and standard
             $deviceName = 'Android';
         } elseif ($dd->isMobile()) {
