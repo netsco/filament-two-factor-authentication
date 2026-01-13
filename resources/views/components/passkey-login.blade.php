@@ -1,5 +1,9 @@
-<div class="flex justify-center w-full">
-    @include('filament-two-factor-authentication::components.partials.passkey-authenticate-script')
+@props(['showButton' => true, 'enableAutofill' => false])
+
+<div class="flex flex-col items-center gap-4 w-full">
+    @include('filament-two-factor-authentication::components.partials.passkey-authenticate-script', [
+        'enableAutofill' => $enableAutofill
+    ])
 
     <form id="passkey-login-form" method="POST" action="{{ filament()->getCurrentPanel()->route('passkeys.login') }}">
         @csrf
@@ -11,10 +15,12 @@
         </div>
     @endif
 
+    @if($showButton)
     <div onclick="authenticateWithPasskey()">
         <x-filament::link href="#" weight="thin" icon="heroicon-o-finger-print">
             {{__("filament-two-factor-authentication::components.passkey.login")}}
         </x-filament::link>
     </div>
+    @endif
 </div>
 

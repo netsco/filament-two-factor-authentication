@@ -10,21 +10,16 @@ class RecoveryCodeReplaced
     use SerializesModels;
 
     /**
-     * The authenticated user.
-     */
-    public FilamentUser $user;
-
-    /**
-     * The recovery code.
-     */
-    public string $code;
-
-    /**
      * Create a new event instance.
      */
-    public function __construct(FilamentUser $user, string $code)
-    {
-        $this->user = $user;
-        $this->code = $code;
-    }
+    public function __construct(
+        /**
+         * The authenticated user.
+         */
+        public FilamentUser $user,
+        /**
+         * The recovery code.
+         */
+        public string $code
+    ) {}
 }

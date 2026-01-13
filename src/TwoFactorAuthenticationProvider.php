@@ -9,23 +9,18 @@ use Stephenjude\FilamentTwoFactorAuthentication\Contracts\TwoFactorAuthenticatio
 class TwoFactorAuthenticationProvider implements TwoFactorAuthenticationProviderContract
 {
     /**
-     * The underlying library providing two factor authentication helper services.
-     */
-    protected Google2FA $engine;
-
-    /**
-     * The cache repository implementation.
-     */
-    protected ?Repository $cache;
-
-    /**
      * Create a new two factor authentication provider instance.
      */
-    public function __construct(Google2FA $engine, ?Repository $cache = null)
-    {
-        $this->engine = $engine;
-        $this->cache = $cache;
-    }
+    public function __construct(
+        /**
+         * The underlying library providing two factor authentication helper services.
+         */
+        protected Google2FA $engine,
+        /**
+         * The cache repository implementation.
+         */
+        protected ?Repository $cache = null
+    ) {}
 
     /**
      * Generate a new secret key.
@@ -52,10 +47,12 @@ class TwoFactorAuthenticationProvider implements TwoFactorAuthenticationProvider
             $this->engine->setWindow($customWindow);
         }
 
+        $key = 'fortify.2fa_codes.' . md5($code);
+
         $timestamp = $this->engine->verifyKeyNewer(
             $secret,
             $code,
-            optional($this->cache)->get($key = 'fortify.2fa_codes.' . md5($code))
+            $this->cache?->get($key)
         );
 
         if ($timestamp !== false) {
@@ -63,7 +60,7 @@ class TwoFactorAuthenticationProvider implements TwoFactorAuthenticationProvider
                 $timestamp = $this->engine->getTimestamp();
             }
 
-            optional($this->cache)->put($key, $timestamp, ($this->engine->getWindow() ?: 1) * 60);
+            $this->cache?->put($key, $timestamp, ($this->engine->getWindow() ?: 1) * 60);
 
             return true;
         }

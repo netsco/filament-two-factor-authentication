@@ -15,6 +15,7 @@ class ForceTwoFactorSetup
             return $next($request);
         }
 
+        /** @phpstan-ignore method.notFound */
         if (! $user?->hasEnabledTwoFactorAuthentication()) {
             return redirect()->to($this->redirectTo());
         }

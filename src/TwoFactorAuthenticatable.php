@@ -62,7 +62,7 @@ trait TwoFactorAuthenticatable
      */
     public function recoveryCodes(): array
     {
-        return json_decode(decrypt($this->two_factor_recovery_codes), true);
+        return json_decode((string) decrypt($this->two_factor_recovery_codes), true);
     }
 
     /**

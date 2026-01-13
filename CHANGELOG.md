@@ -2,6 +2,26 @@
 
 All notable changes to `filament-two-factor-authentication` will be documented in this file.
 
+## Unreleased
+
+### Added
+- PHPStan static analysis at level 4 with baseline support
+- Rector for automated code modernization
+- Architecture tests using Pest arch plugin (no debug functions, proper class structure)
+- Pre-commit hooks via Husky (Pint, PHPStan, Rector, Prettier)
+- Static analysis CI workflow for PRs
+- PHP 8.4 and Laravel 12 support in test matrix
+- `composer audit` security vulnerability scanning in CI
+- `ValidTwoFactorRecoveryCodeProvided` event documentation
+
+### Changed
+- Pinned webauthn-lib to 5.2.2 for compatibility with spatie/laravel-passkeys
+- Improved Android OS detection fallback for passkeys
+- Pre-commit hook now re-stages files after Pint auto-fixes
+
+### Fixed
+- Various code quality improvements from Rector and PHPStan analysis
+
 ## 2.0.2 - 2025-05-21
 
 ### What's Changed
@@ -235,7 +255,3 @@ All notable changes to `filament-two-factor-authentication` will be documented i
 ## 0.0.1 - 2024-08-23
 
 - Initial release
-
-## 1.0.0 - 202X-XX-XX
-
-- initial release

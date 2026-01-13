@@ -1,1 +1,50 @@
 @import '../../vendor/filament/filament/resources/css/theme.css';
+
+/* Digit Input Styles */
+.fi-digit-input {
+    --digit-spacing: calc(3.6ch - 1px);
+    width: fit-content;
+    max-width: 100% !important;
+    letter-spacing: 2.5ch !important;
+    padding-left: 1.5ch;
+    padding-right: 0 !important;
+    text-align: left !important;
+    font-size: 1.5rem !important;
+    font-weight: 600 !important;
+    font-variant-numeric: tabular-nums !important;
+    margin-left: auto;
+    margin-right: auto;
+    background-image:
+        linear-gradient(to right, rgba(var(--gray-300), 1) calc(var(--digit-spacing) * 0), rgba(var(--gray-300), 1) calc(var(--digit-spacing) * 0 + 1px), transparent calc(var(--digit-spacing) * 0 + 1px), transparent 100%),
+        linear-gradient(to right, transparent 0, transparent calc(var(--digit-spacing) * 1), rgba(var(--gray-300), 1) calc(var(--digit-spacing) * 1), rgba(var(--gray-300), 1) calc(var(--digit-spacing) * 1 + 1px), transparent calc(var(--digit-spacing) * 1 + 1px)),
+        linear-gradient(to right, transparent 0, transparent calc(var(--digit-spacing) * 2), rgba(var(--gray-300), 1) calc(var(--digit-spacing) * 2), rgba(var(--gray-300), 1) calc(var(--digit-spacing) * 2 + 1px), transparent calc(var(--digit-spacing) * 2 + 1px)),
+        linear-gradient(to right, transparent 0, transparent calc(var(--digit-spacing) * 3), rgba(var(--gray-300), 1) calc(var(--digit-spacing) * 3), rgba(var(--gray-300), 1) calc(var(--digit-spacing) * 3 + 1px), transparent calc(var(--digit-spacing) * 3 + 1px)),
+        linear-gradient(to right, transparent 0, transparent calc(var(--digit-spacing) * 4), rgba(var(--gray-300), 1) calc(var(--digit-spacing) * 4), rgba(var(--gray-300), 1) calc(var(--digit-spacing) * 4 + 1px), transparent calc(var(--digit-spacing) * 4 + 1px)),
+        linear-gradient(to right, transparent 0, transparent calc(var(--digit-spacing) * 5), rgba(var(--gray-300), 1) calc(var(--digit-spacing) * 5), rgba(var(--gray-300), 1) calc(var(--digit-spacing) * 5 + 1px), transparent calc(var(--digit-spacing) * 5 + 1px)),
+        linear-gradient(to right, transparent 0, transparent calc(var(--digit-spacing) * 6), rgba(var(--gray-300), 1) calc(var(--digit-spacing) * 6), rgba(var(--gray-300), 1) calc(var(--digit-spacing) * 6 + 1px), transparent calc(var(--digit-spacing) * 6 + 1px));
+    background-repeat: no-repeat;
+    caret-color: rgb(var(--primary-600)) !important;
+}
+
+.fi-digit-input:focus {
+    outline: none !important;
+    box-shadow: none !important;
+    border-color: rgb(var(--primary-600)) !important;
+}
+
+:root.dark .fi-digit-input {
+    background-image:
+        linear-gradient(to right, rgba(255, 255, 255, 0.15) calc(var(--digit-spacing) * 0), rgba(255, 255, 255, 0.15) calc(var(--digit-spacing) * 0 + 1px), transparent calc(var(--digit-spacing) * 0 + 1px), transparent 100%),
+        linear-gradient(to right, transparent 0, transparent calc(var(--digit-spacing) * 1), rgba(255, 255, 255, 0.15) calc(var(--digit-spacing) * 1), rgba(255, 255, 255, 0.15) calc(var(--digit-spacing) * 1 + 1px), transparent calc(var(--digit-spacing) * 1 + 1px)),
+        linear-gradient(to right, transparent 0, transparent calc(var(--digit-spacing) * 2), rgba(255, 255, 255, 0.15) calc(var(--digit-spacing) * 2), rgba(255, 255, 255, 0.15) calc(var(--digit-spacing) * 2 + 1px), transparent calc(var(--digit-spacing) * 2 + 1px)),
+        linear-gradient(to right, transparent 0, transparent calc(var(--digit-spacing) * 3), rgba(255, 255, 255, 0.15) calc(var(--digit-spacing) * 3), rgba(255, 255, 255, 0.15) calc(var(--digit-spacing) * 3 + 1px), transparent calc(var(--digit-spacing) * 3 + 1px)),
+        linear-gradient(to right, transparent 0, transparent calc(var(--digit-spacing) * 4), rgba(255, 255, 255, 0.15) calc(var(--digit-spacing) * 4), rgba(255, 255, 255, 0.15) calc(var(--digit-spacing) * 4 + 1px), transparent calc(var(--digit-spacing) * 4 + 1px)),
+        linear-gradient(to right, transparent 0, transparent calc(var(--digit-spacing) * 5), rgba(255, 255, 255, 0.15) calc(var(--digit-spacing) * 5), rgba(255, 255, 255, 0.15) calc(var(--digit-spacing) * 5 + 1px), transparent calc(var(--digit-spacing) * 5 + 1px)),
+        linear-gradient(to right, transparent 0, transparent calc(var(--digit-spacing) * 6), rgba(255, 255, 255, 0.15) calc(var(--digit-spacing) * 6), rgba(255, 255, 255, 0.15) calc(var(--digit-spacing) * 6 + 1px), transparent calc(var(--digit-spacing) * 6 + 1px));
+}
+
+.fi-digit-input-group {
+    .fi-input-wrp-input {
+        margin-left: 2.5ch;
+    }
+}

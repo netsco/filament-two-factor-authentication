@@ -5,18 +5,24 @@ namespace Stephenjude\FilamentTwoFactorAuthentication\Pages;
 use DanHarrin\LivewireRateLimiting\Exceptions\TooManyRequestsException;
 use Filament\Actions\Action;
 use Filament\Facades\Filament;
-use Filament\Forms\Components\TextInput;
 use Filament\Forms\Form;
 use Filament\Http\Responses\Auth\LoginResponse;
+use Filament\Notifications\Notification;
 use Illuminate\Contracts\Support\Htmlable;
 use Stephenjude\FilamentTwoFactorAuthentication\Events\TwoFactorAuthenticationChallenged;
 use Stephenjude\FilamentTwoFactorAuthentication\Events\TwoFactorAuthenticationFailed;
 use Stephenjude\FilamentTwoFactorAuthentication\Events\ValidTwoFactorAuthenticationCodeProvided;
+use Stephenjude\FilamentTwoFactorAuthentication\Forms\Components\DigitInputGroup;
 use Stephenjude\FilamentTwoFactorAuthentication\TwoFactorAuthenticationProvider;
 
+/**
+ * @property Form $form
+ */
 class Challenge extends BaseSimplePage
 {
     protected static string $view = 'filament-two-factor-authentication::pages.challenge';
+
+    protected bool $hasTopbar = false;
 
     public ?array $data = [];
 
@@ -61,6 +67,7 @@ class Challenge extends BaseSimplePage
 
             $user = Filament::auth()->user();
 
+            /** @phpstan-ignore method.notFound */
             $user->setTwoFactorChallengePassed();
 
             event(new ValidTwoFactorAuthenticationCodeProvided($user));
@@ -82,39 +89,38 @@ class Challenge extends BaseSimplePage
             'form' => $this->form(
                 $this->makeForm()
                     ->schema([
-                        TextInput::make('code')
-                            ->hiddenLabel()
-                            ->autofocus()
-                            ->hint(
-                                __('filament-two-factor-authentication::pages.challenge.confirm')
-                            )
-                            ->label(__('filament-two-factor-authentication::pages.challenge.code'))
-                            ->required()
-                            ->autocomplete()
-                            ->rules([
-                                fn () => function (string $attribute, $value, $fail) {
+                        DigitInputGroup::make(
+                            fn (): \Closure => function (string $attribute, string $value, $fail): void {
+                                $user = Filament::auth()->user();
+                                if (is_null($user)) {
+                                    $fail(__('filament-two-factor-authentication::pages.challenge.error'));
+                                    redirect()->to(filament()->getCurrentPanel()->getLoginUrl());
 
-                                    $user = Filament::auth()->user();
-                                    if (is_null($user)) {
-                                        $fail(__('filament-two-factor-authentication::pages.challenge.error'));
+                                    return;
+                                }
 
-                                        redirect()->to(filament()->getCurrentPanel()->getLoginUrl());
+                                $isValidCode = app(TwoFactorAuthenticationProvider::class)->verify(
+                                    /** @phpstan-ignore property.notFound */
+                                    secret: decrypt($user->two_factor_secret),
+                                    code: $value
+                                );
 
-                                        return;
-                                    }
+                                if (! $isValidCode) {
+                                    Notification::make()
+                                        ->title(__('filament-two-factor-authentication::pages.challenge.notification.title'))
+                                        ->body(__('filament-two-factor-authentication::pages.challenge.notification.body'))
+                                        ->danger()
+                                        ->send();
 
-                                    $isValidCode = app(TwoFactorAuthenticationProvider::class)->verify(
-                                        secret: decrypt($user->two_factor_secret),
-                                        code: $value
-                                    );
+                                    // Clear the code field
+                                    $this->data['code'] = '';
 
-                                    if (! $isValidCode) {
-                                        $fail(__('filament-two-factor-authentication::pages.challenge.error'));
+                                    $fail(__('filament-two-factor-authentication::pages.challenge.error'));
 
-                                        event(new TwoFactorAuthenticationFailed($user));
-                                    }
-                                },
-                            ]),
+                                    event(new TwoFactorAuthenticationFailed($user));
+                                }
+                            }
+                        ),
                     ])
                     ->statePath('data'),
             ),
@@ -143,5 +149,10 @@ class Challenge extends BaseSimplePage
     protected function hasFullWidthFormActions(): bool
     {
         return true;
+    }
+
+    protected function getErrorsForPath(string $path): bool
+    {
+        return $this->getErrorBag()->has($path);
     }
 }

@@ -11,6 +11,9 @@ use Filament\Http\Responses\Auth\LoginResponse;
 use Illuminate\Contracts\Support\Htmlable;
 use Stephenjude\FilamentTwoFactorAuthentication\Events\ValidTwoFactorRecoveryCodeProvided;
 
+/**
+ * @property Form $form
+ */
 class Recovery extends BaseSimplePage
 {
     protected static string $view = 'filament-two-factor-authentication::pages.recovery';
@@ -37,6 +40,7 @@ class Recovery extends BaseSimplePage
 
             $user = Filament::auth()->user();
 
+            /** @phpstan-ignore method.notFound */
             $user->setTwoFactorChallengePassed();
 
             event(new ValidTwoFactorRecoveryCodeProvided($user));
@@ -80,11 +84,12 @@ class Recovery extends BaseSimplePage
                             ->required()
                             ->autocomplete()
                             ->autofocus()->rules([
-                                fn () => function (string $attribute, $value, $fail) {
+                                fn (): \Closure => function (string $attribute, $value, $fail): void {
                                     $user = Filament::auth()->user();
 
+                                    /** @phpstan-ignore method.notFound */
                                     $validCode = collect($user->recoveryCodes())->first(
-                                        fn ($code) => hash_equals($code, $value) ? $code : null
+                                        fn ($code): mixed => hash_equals($code, $value) ? $code : null
                                     );
 
                                     if (! $validCode) {

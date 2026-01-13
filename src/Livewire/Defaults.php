@@ -10,6 +10,7 @@ use Filament\Facades\Filament;
 use Filament\Forms\Concerns\InteractsWithForms;
 use Filament\Models\Contracts\FilamentUser;
 use Filament\Notifications\Notification;
+use Illuminate\Contracts\Auth\Authenticatable;
 use Illuminate\Database\Eloquent\Model;
 
 trait Defaults
@@ -18,6 +19,9 @@ trait Defaults
     use InteractsWithForms;
     use WithRateLimiting;
 
+    /**
+     * @return FilamentUser&Model&Authenticatable
+     */
     public function getUser(): FilamentUser
     {
         $user = Filament::auth()->user();
@@ -28,6 +32,7 @@ trait Defaults
             );
         }
 
+        /** @var FilamentUser&Model&Authenticatable $user */
         return $user;
     }
 

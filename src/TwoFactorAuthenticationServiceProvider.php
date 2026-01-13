@@ -33,9 +33,9 @@ class TwoFactorAuthenticationServiceProvider extends PackageServiceProvider
          */
         $package->name(static::$name)
             ->hasTranslations()
-            ->hasInstallCommand(function (InstallCommand $command) {
+            ->hasInstallCommand(function (InstallCommand $command): void {
                 $command
-                    ->startWith(function (InstallCommand $command) {
+                    ->startWith(function (InstallCommand $command): void {
                         $command->callSilently('vendor:publish', ['--tag' => 'passkeys-migrations']);
                     })
                     ->publishAssets()
@@ -60,12 +60,10 @@ class TwoFactorAuthenticationServiceProvider extends PackageServiceProvider
 
     public function packageRegistered(): void
     {
-        $this->app->singleton(TwoFactorAuthenticationProviderContract::class, function ($app) {
-            return new TwoFactorAuthenticationProvider(
-                $app->make(Google2FA::class),
-                $app->make(Repository::class)
-            );
-        });
+        $this->app->singleton(TwoFactorAuthenticationProviderContract::class, fn ($app): \Stephenjude\FilamentTwoFactorAuthentication\TwoFactorAuthenticationProvider => new TwoFactorAuthenticationProvider(
+            $app->make(Google2FA::class),
+            $app->make(Repository::class)
+        ));
     }
 
     public function packageBooted(): void
@@ -95,14 +93,14 @@ class TwoFactorAuthenticationServiceProvider extends PackageServiceProvider
 
     protected function configurePasskey(): void
     {
-        $provider = config('auth.guards.' . filament()?->getCurrentPanel()?->getAuthGuard() . '.provider');
+        $provider = config('auth.guards.' . filament()->getCurrentPanel()?->getAuthGuard() . '.provider');
 
         Config::set(
             key: 'passkeys.models.authenticatable',
             value: Config::get('auth.providers.' . $provider . '.model', 'App\\Models\\User')
         );
 
-        $path = filament()?->getCurrentPanel()?->getPath();
+        $path = filament()->getCurrentPanel()?->getPath();
 
         Config::set(
             key: 'passkeys.redirect_to_after_login',
