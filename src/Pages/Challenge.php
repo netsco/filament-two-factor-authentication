@@ -15,6 +15,9 @@ use Stephenjude\FilamentTwoFactorAuthentication\Events\ValidTwoFactorAuthenticat
 use Stephenjude\FilamentTwoFactorAuthentication\Forms\Components\DigitInputGroup;
 use Stephenjude\FilamentTwoFactorAuthentication\TwoFactorAuthenticationProvider;
 
+/**
+ * @property Form $form
+ */
 class Challenge extends BaseSimplePage
 {
     protected static string $view = 'filament-two-factor-authentication::pages.challenge';
@@ -64,6 +67,7 @@ class Challenge extends BaseSimplePage
 
             $user = Filament::auth()->user();
 
+            /** @phpstan-ignore method.notFound */
             $user->setTwoFactorChallengePassed();
 
             event(new ValidTwoFactorAuthenticationCodeProvided($user));
@@ -86,7 +90,7 @@ class Challenge extends BaseSimplePage
                 $this->makeForm()
                     ->schema([
                         DigitInputGroup::make(
-                            fn () => function (string $attribute, $value, $fail) {
+                            fn (): \Closure => function (string $attribute, string $value, $fail): void {
                                 $user = Filament::auth()->user();
                                 if (is_null($user)) {
                                     $fail(__('filament-two-factor-authentication::pages.challenge.error'));
@@ -96,6 +100,7 @@ class Challenge extends BaseSimplePage
                                 }
 
                                 $isValidCode = app(TwoFactorAuthenticationProvider::class)->verify(
+                                    /** @phpstan-ignore property.notFound */
                                     secret: decrypt($user->two_factor_secret),
                                     code: $value
                                 );

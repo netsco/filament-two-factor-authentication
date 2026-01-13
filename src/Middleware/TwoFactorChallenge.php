@@ -15,9 +15,13 @@ class TwoFactorChallenge
             return $next($request);
         }
 
-        if ($user?->hasEnabledTwoFactorAuthentication() &&
-            ! $user?->isTwoFactorChallengePassed() &&
-            ! $user?->passkeyAuthenticated()
+        if (
+            /** @phpstan-ignore method.notFound */
+            $user?->hasEnabledTwoFactorAuthentication() &&
+            /** @phpstan-ignore method.notFound */
+            ! $user->isTwoFactorChallengePassed() &&
+            /** @phpstan-ignore method.notFound */
+            ! $user->passkeyAuthenticated()
         ) {
             return redirect()->guest($this->twoFactorChallengeRoute());
         }

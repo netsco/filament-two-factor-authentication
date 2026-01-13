@@ -15,7 +15,7 @@ use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Concerns\InteractsWithTable;
 use Filament\Tables\Contracts\HasTable;
 use Filament\Tables\Table;
-use Illuminate\View\View;
+use Illuminate\Support\Facades\Hash;
 use Livewire\Attributes\On;
 use Spatie\LaravelPasskeys\Livewire\PasskeysComponent;
 use Stephenjude\FilamentTwoFactorAuthentication\TwoFactorAuthenticationPlugin;
@@ -69,14 +69,16 @@ class PasskeyAuthentication extends PasskeysComponent implements HasActions, Has
         return "{$browserName} on {$deviceName}";
     }
 
-    public function render(): View
+    public function render(): \Illuminate\View\View
     {
+        /** @var \Illuminate\View\View */
         return view('filament-two-factor-authentication::livewire.passkey-authentication');
     }
 
     public function table(Table $table): Table
     {
         return $table
+            /** @phpstan-ignore method.notFound */
             ->query(fn () => $this->getUser()->passkeys()->latest())
             ->headerActions([
                 Action::make('addPasskey')
@@ -85,13 +87,13 @@ class PasskeyAuthentication extends PasskeysComponent implements HasActions, Has
                     ->modalWidth(MaxWidth::Medium)
                     ->form([
                         TextInput::make('name')
-                            ->default(fn () => $this->getBrowserAndDevice())
+                            ->default(fn (): string => $this->getBrowserAndDevice())
                             ->label(__('filament-two-factor-authentication::components.passkey.name'))
                             ->required()
                             ->autocomplete(false),
                     ])
                     ->modalSubmitActionLabel(__('filament-two-factor-authentication::components.passkey.submit'))
-                    ->action(function ($data, Action $action) {
+                    ->action(function (array $data, Action $action): void {
                         $this->name = $data['name'];
 
                         // Dispatch to self so $wire.on() can catch it
@@ -114,7 +116,7 @@ class PasskeyAuthentication extends PasskeysComponent implements HasActions, Has
             ])
             ->actions([
                 DeleteAction::make()
-                    ->form(function () {
+                    ->form(function (): ?array {
                         if (! TwoFactorAuthenticationPlugin::get()->twoFactorSetupRequiresPassword()) {
                             return null;
                         }
@@ -127,8 +129,9 @@ class PasskeyAuthentication extends PasskeysComponent implements HasActions, Has
                                 ->required()
                                 ->autocomplete('current-password')
                                 ->rules([
-                                    fn () => function (string $attribute, $value, $fail) {
-                                        if (! \Hash::check($value, $this->getUser()->password)) {
+                                    fn (): \Closure => function (string $attribute, $value, $fail): void {
+                                        /** @phpstan-ignore property.notFound */
+                                        if (! Hash::check($value, $this->getUser()->password)) {
                                             $fail(
                                                 __('filament-two-factor-authentication::components.2fa.wrong_password')
                                             );

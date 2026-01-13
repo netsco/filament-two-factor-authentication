@@ -12,7 +12,6 @@ use Illuminate\Support\Facades\Blade;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Event;
 use Illuminate\Support\Facades\Route;
-use JetBrains\PhpStorm\Deprecated;
 use Spatie\LaravelPasskeys\Events\PasskeyUsedToAuthenticateEvent;
 use Spatie\LaravelPasskeys\Http\Controllers\AuthenticateUsingPasskeyController;
 use Spatie\LaravelPasskeys\Http\Controllers\GeneratePasskeyAuthenticationOptionsController;
@@ -34,7 +33,7 @@ class TwoFactorAuthenticationPlugin implements Plugin
 
     protected bool $enableTwoFactorAuthentication = false;
 
-    #[Deprecated('Use the `hasForcedTwoFactorSetup` property instead.')]
+    /** @deprecated Use the `hasForcedTwoFactorSetup` property instead. */
     protected bool $hasEnforcedTwoFactorSetup = false;
 
     protected bool $hasForcedTwoFactorSetup = false;
@@ -51,13 +50,13 @@ class TwoFactorAuthenticationPlugin implements Plugin
 
     protected ?string $twoFactorMenuItemIcon = 'heroicon-o-lock-closed';
 
-    #[Deprecated('Use the `twoFactorSetupRequiresPassword` property instead.')]
+    /** @deprecated Use the `twoFactorSetupRequiresPassword` property instead. */
     protected bool | Closure $isPasswordRequiredForEnable = true;
 
-    #[Deprecated('Use the `twoFactorSetupRequiresPassword` property instead.')]
+    /** @deprecated Use the `twoFactorSetupRequiresPassword` property instead. */
     protected bool | Closure $isPasswordRequiredForDisable = true;
 
-    #[Deprecated('Use the `twoFactorSetupRequiresPassword` property instead.')]
+    /** @deprecated Use the `twoFactorSetupRequiresPassword` property instead. */
     protected bool | Closure $isPasswordRequiredForRegenerateRecoveryCodes = true;
 
     public function getId(): string
@@ -76,11 +75,11 @@ class TwoFactorAuthenticationPlugin implements Plugin
         }
 
         $panel
-            ->routes(fn () => [
+            ->routes(fn (): array => [
                 Route::get('/two-factor-challenge', Challenge::class)->name('two-factor.challenge'),
                 Route::get('/two-factor-recovery', Recovery::class)->name('two-factor.recovery'),
                 Route::get('/two-factor-setup', Setup::class)->name('two-factor.setup'),
-                Route::prefix('passkeys')->group(function () {
+                Route::prefix('passkeys')->group(function (): void {
                     Route::get('authentication-options', GeneratePasskeyAuthenticationOptionsController::class)
                         ->name('passkeys.authentication_options');
                     Route::post('authenticate', AuthenticateUsingPasskeyController::class)
@@ -91,8 +90,8 @@ class TwoFactorAuthenticationPlugin implements Plugin
                 MenuItem::make()
                     ->visible($this->hasTwoFactorMenuItem())
                     ->url(fn (): string => $panel->route('two-factor.setup'))
-                    ->label(fn () => __($this->getTwoFactorMenuItemLabel()))
-                    ->icon(fn () => $this->getTwoFactorMenuItemIcon()),
+                    ->label(fn (): array|string|null => __($this->getTwoFactorMenuItemLabel()))
+                    ->icon(fn (): ?string => $this->getTwoFactorMenuItemIcon()),
             ])
             ->authMiddleware(
                 array_filter([
@@ -102,7 +101,9 @@ class TwoFactorAuthenticationPlugin implements Plugin
             );
     }
 
-    #[Deprecated('Use enableTwoFactorAuthentication instead')]
+    /**
+     * @deprecated Use enableTwoFactorAuthentication instead
+     */
     public function requirePasswordWhenEnabling(bool | Closure $condition = true): static
     {
         $this->isPasswordRequiredForEnable = $this->evaluate($condition);
@@ -110,7 +111,9 @@ class TwoFactorAuthenticationPlugin implements Plugin
         return $this;
     }
 
-    #[Deprecated('Use enableTwoFactorAuthentication instead')]
+    /**
+     * @deprecated Use enableTwoFactorAuthentication instead
+     */
     public function requirePasswordWhenDisabling(bool | Closure $condition = true): static
     {
         $this->isPasswordRequiredForDisable = $this->evaluate($condition);
@@ -118,7 +121,9 @@ class TwoFactorAuthenticationPlugin implements Plugin
         return $this;
     }
 
-    #[Deprecated('Use enableTwoFactorAuthentication instead')]
+    /**
+     * @deprecated Use enableTwoFactorAuthentication instead
+     */
     public function requirePasswordWhenRegeneratingRecoveryCodes(Closure | bool $condition = true): static
     {
         $this->isPasswordRequiredForRegenerateRecoveryCodes = $this->evaluate($condition);
@@ -126,19 +131,25 @@ class TwoFactorAuthenticationPlugin implements Plugin
         return $this;
     }
 
-    #[Deprecated('Use twoFactorSetupRequiresPassword instead')]
+    /**
+     * @deprecated Use twoFactorSetupRequiresPassword instead
+     */
     public function isPasswordRequiredForRegenerateRecoveryCodes(): bool
     {
         return $this->isPasswordRequiredForRegenerateRecoveryCodes;
     }
 
-    #[Deprecated('Use twoFactorSetupRequiresPassword instead')]
+    /**
+     * @deprecated Use twoFactorSetupRequiresPassword instead
+     */
     public function isPasswordRequiredForEnable(): bool
     {
         return $this->isPasswordRequiredForEnable;
     }
 
-    #[Deprecated('Use twoFactorSetupRequiresPassword instead')]
+    /**
+     * @deprecated Use twoFactorSetupRequiresPassword instead
+     */
     public function isPasswordRequiredForDisable(): bool
     {
         return $this->isPasswordRequiredForDisable;
@@ -149,7 +160,9 @@ class TwoFactorAuthenticationPlugin implements Plugin
         return $this->twoFactorSetupRequiresPassword;
     }
 
-    #[Deprecated('Use enableTwoFactorAuthentication(challengeMiddleware:ChallengeTwoFactor::class) instead')]
+    /**
+     * @deprecated Use enableTwoFactorAuthentication(challengeMiddleware:ChallengeTwoFactor::class) instead
+     */
     public function setChallengeTwoFactorMiddleware(Closure | string | bool $middleware = TwoFactorChallenge::class): static
     {
         $this->twoFactorChallengeMiddleware = $this->evaluate($middleware);
@@ -157,7 +170,9 @@ class TwoFactorAuthenticationPlugin implements Plugin
         return $this;
     }
 
-    #[Deprecated('Use getTwoFactorChallengeMiddleware() instead')]
+    /**
+     * @deprecated Use getTwoFactorChallengeMiddleware() instead
+     */
     public function getChallengeTwoFactorMiddleware(): string
     {
         return $this->twoFactorChallengeMiddleware;
@@ -168,7 +183,9 @@ class TwoFactorAuthenticationPlugin implements Plugin
         return $this->twoFactorChallengeMiddleware;
     }
 
-    #[Deprecated('Use forceTwoFactorSetup() instead')]
+    /**
+     * @deprecated Use forceTwoFactorSetup() instead
+     */
     public function enforceTwoFactorSetup(
         Closure | bool $condition = true,
         Closure | string $middleware = ForceTwoFactorSetup::class
@@ -261,7 +278,9 @@ class TwoFactorAuthenticationPlugin implements Plugin
         );
     }
 
-    #[Deprecated('Use getForcedTwoFactorSetupMiddleware() instead')]
+    /**
+     * @deprecated Use getForcedTwoFactorSetupMiddleware() instead
+     */
     public function getEnforceTwoFactorSetupMiddleware(): string
     {
         return $this->enforceTwoFactorSetupMiddleware;
@@ -272,7 +291,9 @@ class TwoFactorAuthenticationPlugin implements Plugin
         return $this->enforceTwoFactorSetupMiddleware;
     }
 
-    #[Deprecated('Use hasForcedTwoFactorSetup() instead')]
+    /**
+     * @deprecated Use hasForcedTwoFactorSetup() instead
+     */
     public function hasEnforcedTwoFactorSetup(): bool
     {
         return $this->hasForcedTwoFactorSetup;
@@ -314,11 +335,17 @@ class TwoFactorAuthenticationPlugin implements Plugin
 
     public function boot(Panel $panel): void
     {
-        Event::listen(function (PasskeyUsedToAuthenticateEvent $event) {
+        Event::listen(function (PasskeyUsedToAuthenticateEvent $event): void {
+            /**
+             * @var \Illuminate\Database\Eloquent\Model $authenticatable
+             * @phpstan-ignore property.notFound
+             */
+            $authenticatable = $event->passkey->authenticatable;
+
             Cache::remember(
-                "passkey::auth::{$event->passkey->authenticatable->id}",
+                "passkey::auth::{$authenticatable->getKey()}",
                 now()->addMinutes(3),
-                fn () => true
+                fn (): bool => true
             );
         });
     }

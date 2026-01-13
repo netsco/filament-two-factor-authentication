@@ -10,15 +10,14 @@ class RecoveryCodesGenerated
     use Dispatchable;
 
     /**
-     * The user instance.
-     */
-    public FilamentUser $user;
-
-    /**
      * Create a new event instance.
      */
-    public function __construct(FilamentUser $user)
+    public function __construct(
+        /**
+         * The user instance.
+         */
+        public FilamentUser $user
+    )
     {
-        $this->user = $user;
     }
 }
