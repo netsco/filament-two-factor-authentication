@@ -5,9 +5,13 @@
 
         try {
             const passkey = await startRegistration({ optionsJSON: passkeyOptions });
+            // storePasskey will close the modal on success
             @this.call('storePasskey', JSON.stringify(passkey));
         } catch (error) {
             console.error('Passkey registration failed:', error);
+
+            // Close the modal first
+            @this.call('closePasskeyModal');
 
             let title = 'Registration Error';
             let message = 'An unexpected error occurred during passkey registration. Please try again.';

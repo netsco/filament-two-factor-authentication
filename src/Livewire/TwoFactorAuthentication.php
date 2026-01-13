@@ -9,13 +9,13 @@ use Filament\Forms\Components\Placeholder;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Contracts\HasForms;
 use Filament\Forms\Form;
-use Stephenjude\FilamentTwoFactorAuthentication\Forms\Components\DigitInputGroup;
 use Illuminate\Support\Facades\Hash;
 use Livewire\Component;
 use Stephenjude\FilamentTwoFactorAuthentication\Actions\ConfirmTwoFactorAuthentication;
 use Stephenjude\FilamentTwoFactorAuthentication\Actions\DisableTwoFactorAuthentication;
 use Stephenjude\FilamentTwoFactorAuthentication\Actions\EnableTwoFactorAuthentication;
 use Stephenjude\FilamentTwoFactorAuthentication\Actions\GenerateNewRecoveryCodes;
+use Stephenjude\FilamentTwoFactorAuthentication\Forms\Components\DigitInputGroup;
 use Stephenjude\FilamentTwoFactorAuthentication\TwoFactorAuthenticationPlugin;
 
 class TwoFactorAuthentication extends Component implements HasActions, HasForms

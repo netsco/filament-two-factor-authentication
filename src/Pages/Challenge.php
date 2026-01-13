@@ -6,13 +6,13 @@ use DanHarrin\LivewireRateLimiting\Exceptions\TooManyRequestsException;
 use Filament\Actions\Action;
 use Filament\Facades\Filament;
 use Filament\Forms\Form;
-use Stephenjude\FilamentTwoFactorAuthentication\Forms\Components\DigitInputGroup;
 use Filament\Http\Responses\Auth\LoginResponse;
 use Filament\Notifications\Notification;
 use Illuminate\Contracts\Support\Htmlable;
 use Stephenjude\FilamentTwoFactorAuthentication\Events\TwoFactorAuthenticationChallenged;
 use Stephenjude\FilamentTwoFactorAuthentication\Events\TwoFactorAuthenticationFailed;
 use Stephenjude\FilamentTwoFactorAuthentication\Events\ValidTwoFactorAuthenticationCodeProvided;
+use Stephenjude\FilamentTwoFactorAuthentication\Forms\Components\DigitInputGroup;
 use Stephenjude\FilamentTwoFactorAuthentication\TwoFactorAuthenticationProvider;
 
 class Challenge extends BaseSimplePage
