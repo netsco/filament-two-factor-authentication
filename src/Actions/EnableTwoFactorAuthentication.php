@@ -32,7 +32,7 @@ class EnableTwoFactorAuthentication
         if (empty($user->two_factor_secret) || $force) {
             $user->forceFill([
                 'two_factor_secret' => encrypt($this->provider->generateSecretKey()),
-                'two_factor_recovery_codes' => encrypt(json_encode(Collection::times(8, fn() => RecoveryCode::generate())->all())),
+                'two_factor_recovery_codes' => encrypt(json_encode(Collection::times(8, fn(): string => RecoveryCode::generate())->all())),
             ])->save();
 
             /** @phpstan-ignore method.notFound */

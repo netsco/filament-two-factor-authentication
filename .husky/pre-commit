@@ -1,0 +1,11 @@
+# Run PHP code style fixer on staged files
+vendor/bin/pint --dirty
+
+# Run PHPStan
+vendor/bin/phpstan analyse
+
+# Run Rector in dry-run mode
+vendor/bin/rector --dry-run
+
+# Run lint-staged for JS/CSS files
+npx lint-staged
