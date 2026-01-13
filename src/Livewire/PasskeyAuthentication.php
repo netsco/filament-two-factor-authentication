@@ -19,7 +19,7 @@ use Illuminate\View\View;
 use Spatie\LaravelPasskeys\Livewire\PasskeysComponent;
 use Stephenjude\FilamentTwoFactorAuthentication\TwoFactorAuthenticationPlugin;
 
-class PasskeyAuthentication extends PasskeysComponent implements HasActions, HasTable
+class PasskeyAuthentication extends PasskeysComponent implements HasActions, HasForms, HasTable
 {
     use Defaults;
     use InteractsWithTable;
