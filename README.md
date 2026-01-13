@@ -122,7 +122,7 @@ If your application already has a user profile page, you can add a 2FA settings 
 This package dispatches events which your application can subscribe to. You can listen to these events inside your EventServiceProvider class:
 
 ```php
-use Stephenjude\FilamentTwoFactorAuthentication\Events\{RecoveryCodeReplaced,RecoveryCodesGenerated,TwoFactorAuthenticationChallenged,TwoFactorAuthenticationConfirmed,TwoFactorAuthenticationDisabled,TwoFactorAuthenticationEnabled,TwoFactorAuthenticationFailed,ValidTwoFactorAuthenticationCodeProvided};
+use Stephenjude\FilamentTwoFactorAuthentication\Events\{RecoveryCodeReplaced,RecoveryCodesGenerated,TwoFactorAuthenticationChallenged,TwoFactorAuthenticationConfirmed,TwoFactorAuthenticationDisabled,TwoFactorAuthenticationEnabled,TwoFactorAuthenticationFailed,ValidTwoFactorAuthenticationCodeProvided,ValidTwoFactorRecoveryCodeProvided};
 
 protected $listen = [
     TwoFactorAuthenticationChallenged::class => [
@@ -133,7 +133,10 @@ protected $listen = [
     ],
     ValidTwoFactorAuthenticationCodeProvided::class => [
         // Dispatched when a user provides a valid 2FA code during login.
-    ]
+    ],
+    ValidTwoFactorRecoveryCodeProvided::class => [
+        // Dispatched when a user provides a valid recovery code during login.
+    ],
     TwoFactorAuthenticationConfirmed::class => [
         // Dispatched when a user confirms code during 2FA setup.
     ],
@@ -172,8 +175,43 @@ protected $listen = [
 ## Testing
 
 ```bash
-composer test
+composer test              # Run full test suite
+vendor/bin/pest           # Run tests directly
+vendor/bin/pest --filter TestName  # Run specific test
 ```
+
+The test suite includes:
+- **Unit tests** for all actions, middleware, and components
+- **Architecture tests** ensuring code structure consistency (no debug functions, proper class inheritance, etc.)
+
+## Code Quality
+
+This project uses several tools to maintain code quality:
+
+### Static Analysis
+```bash
+composer analyse          # Run PHPStan (level 4)
+vendor/bin/rector --dry-run  # Preview Rector suggestions
+vendor/bin/rector process # Apply Rector fixes
+```
+
+### Code Formatting
+```bash
+composer format           # Fix PHP code style with Pint
+vendor/bin/pint          # Run Pint directly
+```
+
+### Pre-commit Hooks
+After running `npm install`, Husky pre-commit hooks are automatically installed. On every commit:
+1. **Pint** formats staged PHP files
+2. **PHPStan** runs static analysis
+3. **Rector** checks for code quality issues
+4. **Prettier** formats JavaScript and CSS files
+
+### CI/CD
+- **Tests**: Run on PHP 8.2, 8.3, and 8.4 with Laravel 11 and 12
+- **Static Analysis**: PHPStan and Rector run on all PRs
+- **Code Style**: Pint automatically formats code on push
 
 ## Changelog
 
@@ -182,6 +220,8 @@ Please see [CHANGELOG](CHANGELOG.md) for more information on what has changed re
 ## Contributing
 
 Please see [CONTRIBUTING](.github/CONTRIBUTING.md) for details.
+
+Before contributing, run `npm install` to set up the pre-commit hooks that ensure code quality.
 
 ## Security Vulnerabilities
 

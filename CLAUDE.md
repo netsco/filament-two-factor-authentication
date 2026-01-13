@@ -19,6 +19,10 @@ vendor/bin/pest --filter TestName  # Run specific test
 ```bash
 composer format           # Fix code style with Pint
 vendor/bin/pint          # Run Pint directly
+composer analyse          # Run PHPStan static analysis
+vendor/bin/phpstan analyse  # Run PHPStan directly
+vendor/bin/rector process # Run Rector code modernization
+vendor/bin/rector --dry-run # Preview Rector changes without applying
 ```
 
 ### Asset Building
@@ -29,6 +33,7 @@ npm run dev:styles       # Watch Tailwind CSS only
 npm run dev:scripts      # Watch JavaScript only
 npm run build:styles     # Build and minify CSS
 npm run build:scripts    # Build JavaScript
+npm install              # Also installs Husky git hooks via prepare script
 ```
 
 ## Architecture
@@ -118,6 +123,27 @@ TwoFactorAuthenticationPlugin::make()
     ->addTwoFactorMenuItem()           // Add 2FA menu item
 ```
 
+**Configuration Method Signatures:**
+
+`enableTwoFactorAuthentication(condition, challengeMiddleware)`:
+- `condition`: bool|Closure - Enable/disable Google 2FA (default: true)
+- `challengeMiddleware`: class-string - Middleware class for 2FA challenge (default: TwoFactorChallenge::class)
+
+`enablePasskeyAuthentication(condition, showLoginButton, enableAutofill)`:
+- `condition`: bool|Closure - Enable/disable passkey authentication (default: true)
+- `showLoginButton`: bool|Closure - Show "Sign in with passkey" button on login page (default: true)
+- `enableAutofill`: bool|Closure - Enable passkey autofill in email input field (default: false)
+
+`forceTwoFactorSetup(condition, requiresPassword, forceMiddleware)`:
+- `condition`: bool|Closure - Force all users to set up 2FA (default: true)
+- `requiresPassword`: bool|Closure - Require password confirmation during setup (default: false)
+- `forceMiddleware`: class-string - Middleware class to enforce setup (default: ForceTwoFactorSetup::class)
+
+`addTwoFactorMenuItem(condition, label, icon)`:
+- `condition`: bool|Closure - Show 2FA in user menu (default: true)
+- `label`: string - Menu item label (default: '2FA')
+- `icon`: string - Heroicon name (default: 'heroicon-s-key')
+
 ### Testing
 Tests use Pest and Orchestra Testbench with a custom `TestCase` that:
 - Sets up all required Filament service providers
@@ -125,10 +151,56 @@ Tests use Pest and Orchestra Testbench with a custom `TestCase` that:
 - Runs migrations for 2FA columns and passkeys table
 - Creates a default test user via `User::createDefault()`
 
+**Architecture Tests** (tests/ArchTest.php):
+Using `pestphp/pest-plugin-arch`, the following architecture constraints are enforced:
+- No debugging functions (`dd`, `dump`, `ray`) in production code
+- No direct `env()` helper usage (use config files instead)
+- All Actions, Events, and Middleware are classes
+- All Middleware have a `handle` method
+- All Pages extend `BaseSimplePage` and are not final
+- All Livewire components extend `Livewire\Component`
+
+### Code Quality Tools
+
+**PHPStan** (phpstan.neon.dist):
+- Level 4 static analysis
+- Analyzes `src` and `database` directories
+- Uses baseline file for known issues
+
+**Rector** (rector.php):
+- Configured rule sets: `deadCode`, `codeQuality`, `typeDeclarations`, `privatization`, `earlyReturn`
+- PHP version sets enabled
+- Skips certain rules that don't fit the codebase style
+
+**Pre-commit Hooks** (.husky/pre-commit):
+Automatically runs on every commit:
+1. Pint on staged PHP files (auto-fixes and re-stages)
+2. PHPStan analysis
+3. Rector dry-run check
+4. Prettier for JS/CSS files via lint-staged
+
+### CI/CD Workflows
+
+**Tests** (.github/workflows/run-tests.yml):
+- Runs on PHP 8.2, 8.3, 8.4
+- Tests against Laravel 11.* and 12.*
+- Includes `composer audit` for security vulnerability scanning
+
+**Static Analysis** (.github/workflows/static-analysis.yml):
+- Runs PHPStan at level 4
+- Runs Rector in dry-run mode
+- Triggers on push to main/2.x branches and PRs
+
+**Code Style** (.github/workflows/fix-php-code-style-issues.yml):
+- Auto-applies Pint formatting and commits changes
+
 ## Important Notes
 
-- The plugin requires Filament v3.0+, PHP 8.1+, and Laravel 9+
+- The plugin requires Filament v3.0+, PHP 8.2+, and Laravel 11+
+- Tested on PHP 8.2, 8.3, and 8.4 with Laravel 11 and 12
 - Secrets and recovery codes are always stored encrypted in the database
 - Recovery codes are one-time use and automatically replaced after successful use
 - Passkey authentication bypasses 2FA challenge if both are enabled
 - The challenge session is tied to the specific user's secret (hashed comparison)
+- **Important**: WebAuthn library is pinned to version 5.2.2 for compatibility with spatie/laravel-passkeys (5.2.3+ has breaking changes)
+- Run `npm install` after cloning to set up Husky pre-commit hooks
