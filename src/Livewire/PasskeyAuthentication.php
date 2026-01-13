@@ -80,7 +80,7 @@ class PasskeyAuthentication extends PasskeysComponent implements HasActions, Has
             ->headerActions([
                 Action::make('addPasskey')
                     ->label(__('filament-two-factor-authentication::components.passkey.add'))
-                    ->modalDescription(__('filament-two-factor-authentication::components.passkey.description'))
+                    /*->modalDescription(__('filament-two-factor-authentication::components.passkey.description'))
                     ->modalWidth(MaxWidth::Medium)
                     ->form([
                         TextInput::make('name')
@@ -88,10 +88,10 @@ class PasskeyAuthentication extends PasskeysComponent implements HasActions, Has
                             ->label(__('filament-two-factor-authentication::components.passkey.name'))
                             ->required()
                             ->autocomplete(false),
-                    ])
+                    ])*/
                     ->modalSubmitActionLabel(__('filament-two-factor-authentication::components.passkey.submit'))
-                    ->action(function ($data, Action $action) {
-                        $this->name = $data['name'];
+                    ->action(function ($data) {
+                        $this->name = 'test';
 
                         $this->dispatch('passkeyPropertiesValidated', [
                             'passkeyOptions' => json_decode($this->generatePasskeyOptions()),

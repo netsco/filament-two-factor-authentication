@@ -1,17 +1,25 @@
 @script
 <script>
+    const componentId = $wire.id;
+
     Livewire.on('passkeyPropertiesValidated', async function (eventData) {
         const passkeyOptions = eventData[0].passkeyOptions;
+        const component = Livewire.find(componentId);
+
+        if (!component) {
+            console.error('Passkey component not found');
+            return;
+        }
 
         try {
             const passkey = await startRegistration({ optionsJSON: passkeyOptions });
             // storePasskey will close the modal on success
-            @this.call('storePasskey', JSON.stringify(passkey));
+            component.call('storePasskey', JSON.stringify(passkey));
         } catch (error) {
             console.error('Passkey registration failed:', error);
 
             // Close the modal first
-            @this.call('closePasskeyModal');
+            component.call('closePasskeyModal');
 
             let title = 'Registration Error';
             let message = 'An unexpected error occurred during passkey registration. Please try again.';
