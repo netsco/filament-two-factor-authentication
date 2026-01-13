@@ -19,7 +19,7 @@ use Illuminate\View\View;
 use Spatie\LaravelPasskeys\Livewire\PasskeysComponent;
 use Stephenjude\FilamentTwoFactorAuthentication\TwoFactorAuthenticationPlugin;
 
-class PasskeyAuthentication extends PasskeysComponent implements HasActions, HasForms, HasTable
+class PasskeyAuthentication extends PasskeysComponent implements HasActions, HasTable
 {
     use Defaults;
     use InteractsWithTable;
@@ -80,7 +80,7 @@ class PasskeyAuthentication extends PasskeysComponent implements HasActions, Has
             ->headerActions([
                 Action::make('addPasskey')
                     ->label(__('filament-two-factor-authentication::components.passkey.add'))
-                    /*->modalDescription(__('filament-two-factor-authentication::components.passkey.description'))
+                    ->modalDescription(__('filament-two-factor-authentication::components.passkey.description'))
                     ->modalWidth(MaxWidth::Medium)
                     ->form([
                         TextInput::make('name')
@@ -88,10 +88,10 @@ class PasskeyAuthentication extends PasskeysComponent implements HasActions, Has
                             ->label(__('filament-two-factor-authentication::components.passkey.name'))
                             ->required()
                             ->autocomplete(false),
-                    ])*/
+                    ])
                     ->modalSubmitActionLabel(__('filament-two-factor-authentication::components.passkey.submit'))
                     ->action(function ($data) {
-                        $this->name = 'test';
+                        $this->name = $data['name'];
 
                         $this->dispatch('passkeyPropertiesValidated', [
                             'passkeyOptions' => json_decode($this->generatePasskeyOptions()),
