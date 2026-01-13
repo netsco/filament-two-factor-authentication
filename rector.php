@@ -10,10 +10,10 @@ use Rector\TypeDeclaration\Rector\ClassMethod\ReturnNeverTypeRector;
 
 return RectorConfig::configure()
     ->withPaths([
-        __DIR__.'/src',
+        __DIR__ . '/src',
     ])
     ->withSkip([
-        __DIR__.'/src/Plugins/Parallel/Paratest/WrapperRunner.php',
+        __DIR__ . '/src/Plugins/Parallel/Paratest/WrapperRunner.php',
         ReturnNeverTypeRector::class,
         ArrowFunctionDelegatingCallToFirstClassCallableRector::class,
         NarrowObjectReturnTypeRector::class,

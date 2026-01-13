@@ -18,9 +18,7 @@ class ConfirmTwoFactorAuthentication
          * The two factor authentication provider.
          */
         protected TwoFactorAuthenticationProvider $provider
-    )
-    {
-    }
+    ) {}
 
     /**
      * Confirm the two factor authentication configuration for the user.

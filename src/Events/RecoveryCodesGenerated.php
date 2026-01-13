@@ -17,7 +17,5 @@ class RecoveryCodesGenerated
          * The user instance.
          */
         public FilamentUser $user
-    )
-    {
-    }
+    ) {}
 }

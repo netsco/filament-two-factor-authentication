@@ -21,7 +21,5 @@ class RecoveryCodeReplaced
          * The recovery code.
          */
         public string $code
-    )
-    {
-    }
+    ) {}
 }

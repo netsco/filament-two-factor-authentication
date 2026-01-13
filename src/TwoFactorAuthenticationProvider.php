@@ -20,9 +20,7 @@ class TwoFactorAuthenticationProvider implements TwoFactorAuthenticationProvider
          * The cache repository implementation.
          */
         protected ?Repository $cache = null
-    )
-    {
-    }
+    ) {}
 
     /**
      * Generate a new secret key.

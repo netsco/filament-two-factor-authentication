@@ -40,7 +40,7 @@ class TwoFactorAuthentication extends Component implements HasActions, HasForms
         $this->form->fill();
     }
 
-    public function render(): \Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View
+    public function render(): \Illuminate\Contracts\View\Factory | \Illuminate\Contracts\View\View
     {
         return view('filament-two-factor-authentication::livewire.two-factor-authentication');
     }
@@ -147,7 +147,7 @@ class TwoFactorAuthentication extends Component implements HasActions, HasForms
         return $form
             ->schema([
                 Placeholder::make('setup_key')
-                    ->label(fn (): array|string|null => __(
+                    ->label(fn (): array | string | null => __(
                         'filament-two-factor-authentication::components.2fa.setup_key',
                         /** @phpstan-ignore property.notFound */
                         ['setup_key' => decrypt($this->getUser()->two_factor_secret)]

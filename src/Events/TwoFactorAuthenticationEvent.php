@@ -11,6 +11,7 @@ abstract class TwoFactorAuthenticationEvent
 
     /**
      * The user instance.
+     *
      * @var \Filament\Models\Contracts\FilamentUser
      */
     public $user;

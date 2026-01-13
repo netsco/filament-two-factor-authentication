@@ -90,7 +90,7 @@ class TwoFactorAuthenticationPlugin implements Plugin
                 MenuItem::make()
                     ->visible($this->hasTwoFactorMenuItem())
                     ->url(fn (): string => $panel->route('two-factor.setup'))
-                    ->label(fn (): array|string|null => __($this->getTwoFactorMenuItemLabel()))
+                    ->label(fn (): array | string | null => __($this->getTwoFactorMenuItemLabel()))
                     ->icon(fn (): ?string => $this->getTwoFactorMenuItemIcon()),
             ])
             ->authMiddleware(
@@ -338,6 +338,7 @@ class TwoFactorAuthenticationPlugin implements Plugin
         Event::listen(function (PasskeyUsedToAuthenticateEvent $event): void {
             /**
              * @var \Illuminate\Database\Eloquent\Model $authenticatable
+             *
              * @phpstan-ignore property.notFound
              */
             $authenticatable = $event->passkey->authenticatable;
