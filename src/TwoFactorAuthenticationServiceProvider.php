@@ -60,7 +60,7 @@ class TwoFactorAuthenticationServiceProvider extends PackageServiceProvider
 
     public function packageRegistered(): void
     {
-        $this->app->singleton(TwoFactorAuthenticationProviderContract::class, fn ($app): \Stephenjude\FilamentTwoFactorAuthentication\TwoFactorAuthenticationProvider => new TwoFactorAuthenticationProvider(
+        $this->app->singleton(TwoFactorAuthenticationProviderContract::class, fn ($app): TwoFactorAuthenticationProvider => new TwoFactorAuthenticationProvider(
             $app->make(Google2FA::class),
             $app->make(Repository::class)
         ));

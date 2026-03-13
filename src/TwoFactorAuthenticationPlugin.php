@@ -8,6 +8,7 @@ use Filament\Navigation\MenuItem;
 use Filament\Panel;
 use Filament\Support\Concerns\EvaluatesClosures;
 use Filament\View\PanelsRenderHook;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Blade;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Event;
@@ -337,7 +338,7 @@ class TwoFactorAuthenticationPlugin implements Plugin
     {
         Event::listen(function (PasskeyUsedToAuthenticateEvent $event): void {
             /**
-             * @var \Illuminate\Database\Eloquent\Model $authenticatable
+             * @var Model $authenticatable
              *
              * @phpstan-ignore property.notFound
              */

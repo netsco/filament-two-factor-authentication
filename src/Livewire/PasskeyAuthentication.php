@@ -16,6 +16,7 @@ use Filament\Tables\Concerns\InteractsWithTable;
 use Filament\Tables\Contracts\HasTable;
 use Filament\Tables\Table;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\View\View;
 use Livewire\Attributes\On;
 use Spatie\LaravelPasskeys\Livewire\PasskeysComponent;
 use Stephenjude\FilamentTwoFactorAuthentication\TwoFactorAuthenticationPlugin;
@@ -69,9 +70,9 @@ class PasskeyAuthentication extends PasskeysComponent implements HasActions, Has
         return "{$browserName} on {$deviceName}";
     }
 
-    public function render(): \Illuminate\View\View
+    public function render(): View
     {
-        /** @var \Illuminate\View\View */
+        /** @var View */
         return view('filament-two-factor-authentication::livewire.passkey-authentication');
     }
 

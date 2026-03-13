@@ -9,6 +9,8 @@ use Filament\Forms\Components\Placeholder;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Contracts\HasForms;
 use Filament\Forms\Form;
+use Illuminate\Contracts\View\Factory;
+use Illuminate\Contracts\View\View;
 use Illuminate\Support\Facades\Hash;
 use Livewire\Component;
 use Stephenjude\FilamentTwoFactorAuthentication\Actions\ConfirmTwoFactorAuthentication;
@@ -40,7 +42,7 @@ class TwoFactorAuthentication extends Component implements HasActions, HasForms
         $this->form->fill();
     }
 
-    public function render(): \Illuminate\Contracts\View\Factory | \Illuminate\Contracts\View\View
+    public function render(): Factory | View
     {
         return view('filament-two-factor-authentication::livewire.two-factor-authentication');
     }
